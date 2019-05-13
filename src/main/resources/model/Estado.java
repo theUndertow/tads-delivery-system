@@ -6,11 +6,16 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.inject.Named;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -23,7 +28,8 @@ public class Estado implements Serializable {
     private long estado_id;
     private String estado_nome;
     private String estado_sigla;
-
+    private List<Cidade> cidades;
+    
     public Estado() {
     }
     
@@ -53,5 +59,12 @@ public class Estado implements Serializable {
         this.estado_sigla = estado_sigla;
     }
     
-    
+    @OneToMany(mappedBy = "estado", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    public List<Cidade> getCidades() {
+        return cidades;
+    }
+
+    public void setCidades(List<Cidade> cidades) {
+        this.cidades = cidades;
+    }
 }

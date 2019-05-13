@@ -7,10 +7,13 @@ package model;
 
 import java.io.Serializable;
 import javax.inject.Named;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,10 +31,12 @@ public class Usuario implements Serializable {
     private long usuario_endereco;
     private char usuario_tipo;
     private Endereco endereco = new Endereco();
+    private Entregador entregador = new Entregador();
+    private Gerente gerente = new Gerente();
 
     public Usuario() {
     }
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long getUsuario_id() {
@@ -41,7 +46,7 @@ public class Usuario implements Serializable {
     public void setUsuario_id(long usuario_id) {
         this.usuario_id = usuario_id;
     }
-
+    
     public String getUsuario_cpf() {
         return usuario_cpf;
     }
@@ -106,4 +111,24 @@ public class Usuario implements Serializable {
         this.endereco = endereco;
     }
     
+    @OneToOne(mappedBy = "entregador")
+    public Entregador getEntregador() {
+        return entregador;
+    }
+
+    public void setEntregador(Entregador entregador) {
+        this.entregador = entregador;
+    }
+    
+    @OneToOne(mappedBy = "gerente")
+    public Gerente getGerente() {
+        return gerente;
+    }
+
+    public void setGerente(Gerente gerente) {
+        this.gerente = gerente;
+    }
+    
+    
+
 }

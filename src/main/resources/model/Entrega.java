@@ -8,10 +8,15 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 import javax.inject.Named;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -27,14 +32,16 @@ public class Entrega implements Serializable {
     private String entrega_motivo;
     private long entrega_entregador;
     private long entrega_historico;
+    private long entrega_endereco;
     private Entregador entregador = new Entregador();
     private Historico historico = new Historico();
+    private Endereco endereco = new Endereco();
 
     public Entrega() {
     }
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getEntrega_id() {
         return entrega_id;
     }
@@ -59,6 +66,7 @@ public class Entrega implements Serializable {
         this.entrega_destinatario = entrega_destinatario;
     }
 
+    @Temporal(javax.persistence.TemporalType.DATE)
     public Date getEntrega_data() {
         return entrega_data;
     }
@@ -91,6 +99,17 @@ public class Entrega implements Serializable {
         this.entrega_historico = entrega_historico;
     }
 
+    public long getEntrega_endereco() {
+        return entrega_endereco;
+    }
+
+    public void setEntrega_endereco(long entrega_endereco) {
+        this.entrega_endereco = entrega_endereco;
+    }
+    
+    
+    @ManyToOne
+    @JoinColumn(name = "entrega_entregador")
     public Entregador getEntregador() {
         return entregador;
     }
@@ -98,13 +117,25 @@ public class Entrega implements Serializable {
     public void setEntregador(Entregador entregador) {
         this.entregador = entregador;
     }
-
+    
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="entrega_historico", updatable=true)
     public Historico getHistorico() {
         return historico;
     }
 
     public void setHistorico(Historico historico) {
         this.historico = historico;
+    }
+    
+    @ManyToOne
+    @JoinColumn(name = "entrega_endereco")
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
     
     

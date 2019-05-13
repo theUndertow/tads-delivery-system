@@ -6,11 +6,17 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.inject.Named;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -27,12 +33,13 @@ public class Endereco implements Serializable {
     private String endereco_bairro;
     private long endereco_cidade;
     private Cidade cidade = new Cidade();
+    private List<Entrega> entregas;
     
     public Endereco() {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getEndereco_id() {
         return endereco_id;
     }
@@ -80,7 +87,9 @@ public class Endereco implements Serializable {
     public void setEndereco_cidade(long endereco_cidade) {
         this.endereco_cidade = endereco_cidade;
     }
-
+    
+    @ManyToOne
+    @JoinColumn(name = "endereco_cidade")
     public Cidade getCidade() {
         return cidade;
     }
@@ -89,5 +98,13 @@ public class Endereco implements Serializable {
         this.cidade = cidade;
     }
     
+    @OneToMany(mappedBy = "endereco", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    public List<Entrega> getEntregas() {
+        return entregas;
+    }
+
+    public void setEntregas(List<Entrega> entregas) {
+        this.entregas = entregas;
+    }
     
 }
