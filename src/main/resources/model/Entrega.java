@@ -137,6 +137,4 @@ public class Entrega implements Serializable {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
-    
-    
 }

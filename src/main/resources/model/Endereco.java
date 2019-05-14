@@ -33,6 +33,7 @@ public class Endereco implements Serializable {
     private String endereco_bairro;
     private long endereco_cidade;
     private Cidade cidade = new Cidade();
+    private List<Usuario> usuarios;
     private List<Entrega> entregas;
     
     public Endereco() {
@@ -107,4 +108,12 @@ public class Endereco implements Serializable {
         this.entregas = entregas;
     }
     
+    @OneToMany(mappedBy = "endereco", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
 }

@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -102,7 +103,9 @@ public class Usuario implements Serializable {
     public void setUsuario_tipo(char usuario_tipo) {
         this.usuario_tipo = usuario_tipo;
     }
-
+    
+    @ManyToOne
+    @JoinColumn(name = "usuario_endereco")
     public Endereco getEndereco() {
         return endereco;
     }
@@ -127,8 +130,5 @@ public class Usuario implements Serializable {
 
     public void setGerente(Gerente gerente) {
         this.gerente = gerente;
-    }
-    
-    
-
+    }   
 }
