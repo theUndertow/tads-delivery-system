@@ -7,12 +7,13 @@ package com.dac.tads.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.inject.Named;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 /**
@@ -21,35 +22,38 @@ import javax.persistence.Temporal;
  */
 
 @Entity
-@Named(value = "tb_historico")
+@Table(name = "tb_historico")
 public class Historico implements Serializable {
-    private long historico_id;
-    private String historico_historico;
+    private long id;
+    private String historico;
     private Date tempo;
-    private Entrega entrega = new Entrega();
+    private Entrega entrega;
 
     public Historico() {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getHistorico_id() {
-        return historico_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "historico_id")
+    public long getId() {
+        return id;
     }
 
-    public void setHistorico_id(long historico_id) {
-        this.historico_id = historico_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getHistorico_historico() {
-        return historico_historico;
+    @Column(name = "historico_historico")
+    public String getHistorico() {
+        return historico;
     }
 
-    public void setHistorico_historico(String historico_historico) {
-        this.historico_historico = historico_historico;
+    public void setHistorico(String historico) {
+        this.historico = historico;
     }
 
     @Temporal(javax.persistence.TemporalType.DATE)
+    @Column(name = "historico_tempo")
     public Date getTempo() {
         return tempo;
     }
@@ -58,7 +62,7 @@ public class Historico implements Serializable {
         this.tempo = tempo;
     }
     
-    @OneToOne(mappedBy = "entrega")
+    @OneToOne(mappedBy = "historico")
     public Entrega getEntrega() {
         return entrega;
     }

@@ -7,8 +7,8 @@ package com.dac.tads.model;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.inject.Named;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
@@ -24,12 +25,11 @@ import javax.persistence.OneToMany;
  */
 
 @Entity
-@Named(value = "tb_cidade")
+@Table(name = "tb_cidade")
 public class Cidade implements Serializable {
-    private long cidade_id;
-    private String cidade_nome;
-    private long cidade_estado;
-    private Estado estado = new Estado();
+    private long id;
+    private String nome;
+    private Estado estado;
     private List<Endereco> enderecos;
     
     public Cidade() {
@@ -37,32 +37,26 @@ public class Cidade implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getCidade_id() {
-        return cidade_id;
+    @Column(name = "cidade_id")
+    public long getId() {
+        return id;
     }
 
-    public void setCidade_id(long cidade_id) {
-        this.cidade_id = cidade_id;
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    @Column(name = "cidade_nome")
+    public String getNome() {
+        return nome;
     }
 
-    public String getCidade_nome() {
-        return cidade_nome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setCidade_nome(String cidade_nome) {
-        this.cidade_nome = cidade_nome;
-    }
-    
-    public long getCidade_estado() {
-        return cidade_estado;
-    }
-    
-    public void setCidade_estado(long cidade_estado) {
-        this.cidade_estado = cidade_estado;
-    }
-    
     @ManyToOne
-    @JoinColumn(name = "cidade_estado")
+    @JoinColumn(name = "cidade_estado", nullable = false) 
     public Estado getEstado() {
         return estado;
     }
@@ -70,7 +64,7 @@ public class Cidade implements Serializable {
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
-    
+
     @OneToMany(mappedBy = "cidade", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     public List<Endereco> getEnderecos() {
         return enderecos;

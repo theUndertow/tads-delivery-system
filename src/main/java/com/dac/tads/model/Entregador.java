@@ -7,7 +7,6 @@ package com.dac.tads.model;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.inject.Named;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,17 +16,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author marco
  */
 @Entity
-@Named(value = "tb_entregador")
+@Table(name = "tb_entregador")
 public class Entregador implements Serializable {
-    private long entregador_id;
-    private long entregador_usuario;
-    private Usuario usuario = new Usuario();
+    private long id;
+    private Usuario usuario;
     private List<Entrega> entregas;
 
     public Entregador() {
@@ -35,24 +34,16 @@ public class Entregador implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getEntregador_id() {
-        return entregador_id;
+    public long getId() {
+        return id;
     }
 
-    public void setEntregador_id(long entregador_id) {
-        this.entregador_id = entregador_id;
+    public void setId(long id) {
+        this.id = id;
     }
-
-    public long getEntregador_usuario() {
-        return entregador_usuario;
-    }
-
-    public void setEntregador_usuario(long entregador_usuario) {
-        this.entregador_usuario = entregador_usuario;
-    }  
     
     @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="entregador_usuario", updatable=true)
+    @JoinColumn(name="entregador_usuario", updatable=true, nullable = false)
     public Usuario getUsuario() {
         return usuario;
     }

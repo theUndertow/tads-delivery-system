@@ -7,8 +7,8 @@ package com.dac.tads.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.inject.Named;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 /**
@@ -23,93 +24,80 @@ import javax.persistence.Temporal;
  * @author marco
  */
 @Entity
-@Named(value = "tb_entrega")
+@Table(name = "tb_entrega")
 public class Entrega implements Serializable {
-    private long entrega_id;
-    private String entrega_descricao;
-    private String entrega_destinatario;
-    private Date entrega_data;
-    private String entrega_motivo;
-    private long entrega_entregador;
-    private long entrega_historico;
-    private long entrega_endereco;
-    private Entregador entregador = new Entregador();
-    private Historico historico = new Historico();
-    private Endereco endereco = new Endereco();
+    private long id;
+    private String descricao;
+    private String destinatario;
+    private Date data;
+    private String motivo;
+    private Endereco endereco;
+    private Entregador entregador;
+    private Historico historico;
 
     public Entrega() {
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getEntrega_id() {
-        return entrega_id;
+    @Column(name = "entrega_id")
+    public long getId() {
+        return id;
     }
 
-    public void setEntrega_id(long entrega_id) {
-        this.entrega_id = entrega_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getEntrega_descricao() {
-        return entrega_descricao;
+    @Column(name = "entrega_descricao")
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setEntrega_descricao(String entrega_descricao) {
-        this.entrega_descricao = entrega_descricao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public String getEntrega_destinatario() {
-        return entrega_destinatario;
+    @Column(name = "entrega_destinatario")
+    public String getDestinatario() {
+        return destinatario;
     }
 
-    public void setEntrega_destinatario(String entrega_destinatario) {
-        this.entrega_destinatario = entrega_destinatario;
-    }
-
-    @Temporal(javax.persistence.TemporalType.DATE)
-    public Date getEntrega_data() {
-        return entrega_data;
-    }
-
-    public void setEntrega_data(Date entrega_data) {
-        this.entrega_data = entrega_data;
-    }
-
-    public String getEntrega_motivo() {
-        return entrega_motivo;
-    }
-
-    public void setEntrega_motivo(String entrega_motivo) {
-        this.entrega_motivo = entrega_motivo;
-    }
-
-    public long getEntrega_entregador() {
-        return entrega_entregador;
-    }
-
-    public void setEntrega_entregador(long entrega_entregador) {
-        this.entrega_entregador = entrega_entregador;
-    }
-
-    public long getEntrega_historico() {
-        return entrega_historico;
-    }
-
-    public void setEntrega_historico(long entrega_historico) {
-        this.entrega_historico = entrega_historico;
-    }
-
-    public long getEntrega_endereco() {
-        return entrega_endereco;
-    }
-
-    public void setEntrega_endereco(long entrega_endereco) {
-        this.entrega_endereco = entrega_endereco;
+    public void setDestinatario(String destinatario) {
+        this.destinatario = destinatario;
     }
     
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @Column(name = "entrega_data")
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+    
+    @Column(name = "entrega_motivo")
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
     
     @ManyToOne
-    @JoinColumn(name = "entrega_entregador")
+    @JoinColumn(name = "entrega_endereco", nullable = false)
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+    
+    @ManyToOne
+    @JoinColumn(name = "entrega_entregador", nullable = false)
     public Entregador getEntregador() {
         return entregador;
     }
@@ -119,7 +107,7 @@ public class Entrega implements Serializable {
     }
     
     @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="entrega_historico", updatable=true)
+    @JoinColumn(name="entrega_historico", updatable=true, nullable = false)
     public Historico getHistorico() {
         return historico;
     }
@@ -128,13 +116,4 @@ public class Entrega implements Serializable {
         this.historico = historico;
     }
     
-    @ManyToOne
-    @JoinColumn(name = "entrega_endereco")
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
 }

@@ -6,8 +6,7 @@
 package com.dac.tads.model;
 
 import java.io.Serializable;
-import javax.inject.Named;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,97 +14,96 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author marco
  */
 @Entity
-@Named(value = "tb_usuario")
+@Table(name = "tb_usuario")
 public class Usuario implements Serializable {
-    private long usuario_id;
-    private String usuario_cpf;
-    private String usuario_nome;
-    private String usuario_telefone;
-    private String usuario_email;
-    private String usuario_senha;
-    private long usuario_endereco;
-    private char usuario_tipo;
-    private Endereco endereco = new Endereco();
-    private Entregador entregador = new Entregador();
-    private Gerente gerente = new Gerente();
+    private long id;
+    private String email;
+    private String senha;
+    private String cpf;
+    private String nome;
+    private String telefone;
+    private char tipo;
+    private Endereco endereco;
+    private Entregador entregador;
+    private Gerente gerente;
 
     public Usuario() {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getUsuario_id() {
-        return usuario_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usuario_id")
+    public long getId() {
+        return id;
     }
 
-    public void setUsuario_id(long usuario_id) {
-        this.usuario_id = usuario_id;
-    }
-    
-    public String getUsuario_cpf() {
-        return usuario_cpf;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setUsuario_cpf(String usuario_cpf) {
-        this.usuario_cpf = usuario_cpf;
+    @Column(name = "usuario_email", nullable = false)
+    public String getEmail() {
+        return email;
     }
 
-    public String getUsuario_nome() {
-        return usuario_nome;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setUsuario_nome(String usuario_nome) {
-        this.usuario_nome = usuario_nome;
+    @Column(name = "usuario_senha_criptografada", nullable = false)
+    public String getSenha() {
+        return senha;
     }
 
-    public String getUsuario_telefone() {
-        return usuario_telefone;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
-    public void setUsuario_telefone(String usuario_telefone) {
-        this.usuario_telefone = usuario_telefone;
+    @Column(name = "usuario_cpf", nullable = false)
+    public String getCpf() {
+        return cpf;
     }
 
-    public String getUsuario_email() {
-        return usuario_email;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
-    public void setUsuario_email(String usuario_email) {
-        this.usuario_email = usuario_email;
+    @Column(name = "usuario_nome")
+    public String getNome() {
+        return nome;
     }
 
-    public String getUsuario_senha() {
-        return usuario_senha;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setUsuario_senha(String usuario_senha) {
-        this.usuario_senha = usuario_senha;
+    @Column(name = "usuario_telefone")
+    public String getTelefone() {
+        return telefone;
     }
 
-    public long getUsuario_endereco() {
-        return usuario_endereco;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-    public void setUsuario_endereco(long usuario_endereco) {
-        this.usuario_endereco = usuario_endereco;
+    @Column(name = "usuario_tipo", nullable = false)
+    public char getTipo() {
+        return tipo;
     }
 
-    public char getUsuario_tipo() {
-        return usuario_tipo;
-    }
-
-    public void setUsuario_tipo(char usuario_tipo) {
-        this.usuario_tipo = usuario_tipo;
+    public void setTipo(char tipo) {
+        this.tipo = tipo;
     }
     
     @ManyToOne
-    @JoinColumn(name = "usuario_endereco")
+    @JoinColumn(name = "usuario_endereco", nullable = false)
     public Endereco getEndereco() {
         return endereco;
     }
@@ -114,7 +112,7 @@ public class Usuario implements Serializable {
         this.endereco = endereco;
     }
     
-    @OneToOne(mappedBy = "entregador")
+    @OneToOne(mappedBy = "usuario")
     public Entregador getEntregador() {
         return entregador;
     }
@@ -123,7 +121,7 @@ public class Usuario implements Serializable {
         this.entregador = entregador;
     }
     
-    @OneToOne(mappedBy = "gerente")
+    @OneToOne(mappedBy = "usuario")
     public Gerente getGerente() {
         return gerente;
     }
