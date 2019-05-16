@@ -1,7 +1,15 @@
-
+import com.dac.tads.dao.CidadeDAO;
+import com.dac.tads.dao.EnderecoDAO;
+import com.dac.tads.dao.EntregadorDAO;
 import com.dac.tads.dao.EstadoDAO;
+import com.dac.tads.dao.GerenteDAO;
+import com.dac.tads.dao.UsuarioDAO;
 import com.dac.tads.model.Cidade;
+import com.dac.tads.model.Endereco;
+import com.dac.tads.model.Entregador;
 import com.dac.tads.model.Estado;
+import com.dac.tads.model.Gerente;
+import com.dac.tads.model.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +29,12 @@ public class TesteTads {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        /*Estado estado = new Estado();
+        /*
+        Estado estado = new Estado();
         estado.setNome("Parana");
+        EstadoDAO estadoDAO = new EstadoDAO();
+        estadoDAO.insertEstado(estado);
         
-        List<Cidade> cidades = new ArrayList<>();;
-        Cidade cidade = new Cidade();
-        cidade.setEstado(estado);
-        cidade.setNome("Curitiba");
         cidades.add()
         
         EstadoDAO dao = new EstadoDAO();
@@ -44,9 +51,96 @@ public class TesteTads {
         for(Estado e:estados){
             System.out.println(e.getNome());
         }
-        
         */
-
+        
+        /*
+        Cidade cidade = new Cidade();
+        Cidade cidade2 = new Cidade();
+        Estado estado = new Estado();
+        EstadoDAO estadoDAO = new EstadoDAO();
+        CidadeDAO cidadeDAO = new CidadeDAO();
+        estado = estadoDAO.selectEstado(2);
+        
+        List<Cidade> cidades = estado.getCidades();
+        
+        cidade.setEstado(estado);
+        cidade.setNome("Curitiba");
+        cidades.add(cidade);
+        
+        cidade2.setNome("Quatro Barras");
+        cidade2.setEstado(estado);
+        cidades.add(cidade2);
+        
+        estado.setCidades(cidades);
+        
+        estadoDAO.updateEstado(estado);
+        =========================================================================
+        
+        Usuario usuario = new Usuario();
+        Gerente gerente = new Gerente();
+        Endereco endereco = new Endereco();
+        EnderecoDAO enderecoDAO = new EnderecoDAO();
+        CidadeDAO cidadeDAO = new CidadeDAO();
+        
+        endereco.setCidade(cidadeDAO.selectCidade(2));
+        endereco.setBairro("Santa felicidade");
+        endereco.setComplemento("Casa 1");
+        endereco.setNumero(320);
+        
+        enderecoDAO.insertEndereco(endereco);
+        
+        
+        usuario.setCpf("12345678901");
+        usuario.setEmail("marco.vieira.olivette@gmail.com");
+        usuario.setNome("Marco Olivette");
+        usuario.setSenha("123456");
+        usuario.setTelefone("(41) 99999-9999");
+        usuario.setTipo('c');
+        usuario.setEndereco(endereco);
+        
+        
+        gerente.setUsuario(usuario);
+        
+        GerenteDAO gerenteDAO = new GerenteDAO();
+        
+        gerenteDAO.insertGerente(gerente);
+        
+        =========================================================================
+        
+        
+        
+        
+        Usuario usuario = new Usuario();
+        Entregador entregador = new Entregador();
+        
+        usuario.setCpf("02123212321");
+        usuario.setEmail("patrick.dziura@gmail.com");
+        usuario.setNome("Patrick Dziura");
+        usuario.setSenha("0123456789");
+        usuario.setTelefone("(41) 99999-9999");
+        usuario.setTipo('c');
+        EnderecoDAO enderecoDao = new EnderecoDAO();
+        usuario.setEndereco(enderecoDao.selectEndereco(1));
+        
+        UsuarioDAO usuarioDao = new UsuarioDAO();
+        usuarioDao.insertUsuario(usuario);
+        
+        EntregadorDAO entregadorDao = new EntregadorDAO();
+        entregadorDao.insertEntregador(entregador);
+        
+        Usuario usuario = new Usuario();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        usuario = usuarioDAO.selectUsuario(2);
+        usuario.setTipo('e');
+        usuarioDAO.updateUsuario(usuario);
+        
+        
+        Entregador entregador = new Entregador();
+        EntregadorDAO entregadorDAO = new EntregadorDAO();
+        entregador.setUsuario(usuario);
+        
+        entregadorDAO.insertEntregador(entregador);
+        */
     }
     
 }
