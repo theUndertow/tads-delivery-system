@@ -41,9 +41,10 @@ public class GerenteDAO {
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery(
-                    "from Gerente where Gerente.id = :id");
+                    "from Gerente where id = :id");
             query.setInteger("id", id);
             gerente = (Gerente) query.uniqueResult();
+            session.close();
         } catch (HibernateException e) {
             e.printStackTrace();
         }

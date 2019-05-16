@@ -41,9 +41,10 @@ public class EntregadorDAO {
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery(
-                    "from Entregador where Entregador.id = :id");
+                    "from Entregador where id = :id");
             query.setInteger("id", id);
             entregador = (Entregador) query.uniqueResult();
+            session.close();
         } catch (HibernateException e) {
             e.printStackTrace();
         }

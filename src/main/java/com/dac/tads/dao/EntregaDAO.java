@@ -41,9 +41,10 @@ public class EntregaDAO {
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery(
-                    "from Entrega where Entrega.id = :id");
+                    "from Entrega where id = :id");
             query.setInteger("id", id);
             entrega = (Entrega) query.uniqueResult();
+            session.close();
         } catch (HibernateException e) {
             e.printStackTrace();
         }

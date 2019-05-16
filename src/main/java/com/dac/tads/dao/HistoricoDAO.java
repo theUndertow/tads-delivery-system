@@ -41,9 +41,10 @@ public class HistoricoDAO {
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery(
-                    "from Historico where Historico.id = :id");
+                    "from Historico where id = :id");
             query.setInteger("id", id);
             historico = (Historico) query.uniqueResult();
+            session.close();
         } catch (HibernateException e) {
             e.printStackTrace();
         }
