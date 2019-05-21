@@ -46,5 +46,14 @@ Contributor(s):
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/db_tads</property>
     <property name="hibernate.connection.username">dac</property>
     <property name="hibernate.connection.password">dac</property>
+    <mapping package="com.dac.tads.model"/>
+    <mapping class="com.dac.tads.model.Cidade"/>
+    <mapping class="com.dac.tads.model.Endereco"/>
+    <mapping class="com.dac.tads.model.Entrega"/>
+    <mapping class="com.dac.tads.model.Entregador"/>
+    <mapping class="com.dac.tads.model.Estado"/>
+    <mapping class="com.dac.tads.model.Gerente"/>
+    <mapping class="com.dac.tads.model.Historico"/>
+    <mapping class="com.dac.tads.model.Usuario"/>
   </session-factory>
 </hibernate-configuration>
