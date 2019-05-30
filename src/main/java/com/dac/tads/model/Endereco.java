@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -33,7 +34,7 @@ public class Endereco implements Serializable {
     private String complemento;
     private String bairro;
     private Cidade cidade;
-    private List<Usuario> usuarios;
+    private Usuario usuario;
     private List<Entrega> entregas;
     
     public Endereco() {
@@ -105,12 +106,14 @@ public class Endereco implements Serializable {
         this.entregas = entregas;
     }
     
-    @OneToMany(mappedBy = "endereco", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    public List<Usuario> getUsuarios() {
-        return usuarios;
+    @OneToOne(mappedBy = "endereco")
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
+    
+    
 }

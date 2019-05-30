@@ -1,3 +1,4 @@
+import com.dac.tads.criptografia.MDFive;
 import com.dac.tads.dao.CidadeDAO;
 import com.dac.tads.dao.EnderecoDAO;
 import com.dac.tads.dao.EntregadorDAO;
@@ -6,6 +7,7 @@ import com.dac.tads.dao.GerenteDAO;
 import com.dac.tads.dao.UsuarioDAO;
 import com.dac.tads.model.Cidade;
 import com.dac.tads.model.Endereco;
+import com.dac.tads.model.Entrega;
 import com.dac.tads.model.Entregador;
 import com.dac.tads.model.Estado;
 import com.dac.tads.model.Gerente;
@@ -140,7 +142,57 @@ public class TesteTads {
         entregador.setUsuario(usuario);
         
         entregadorDAO.insertEntregador(entregador);
+        
+        
+        // INSERÇÃO DE ESTADO    
+          
+            Estado estado = new Estado();
+            EstadoDAO estadoDAO = new EstadoDAO();
+
+            estado.setNome("Parana");
+            estadoDAO.insertEstado(estado);
+        
+        
+        // INSERÇÃO DE CIDADE    
+          
+            Cidade cidade = new Cidade();
+            CidadeDAO cidadeDAO = new CidadeDAO();
+            Estado estado = new Estado();
+            EstadoDAO estadoDAO = new EstadoDAO();
+
+            estado = estadoDAO.selectEstado(1);
+            cidade.setNome("Curitiba");
+            cidade.setEstado(estado);
+            cidadeDAO.insertCidade(cidade);
         */
+        
+        // INSERÇÃO DE USUARIO
+        
+            Usuario usuario = new Usuario();
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            MDFive md5 = new MDFive();
+            
+            usuario.setEmail("marco@gmail.com");
+            usuario.setNome("Marco");
+            usuario.setCpf("12345678901");
+            usuario.setSenha(md5.encripta("123"));
+            usuario.setTipo('e');
+
+            //Cria obj cidade
+            CidadeDAO cidadeDAO = new CidadeDAO();
+            Cidade cidade = cidadeDAO.selectCidade(1);
+
+            //Cria obj Endereco
+            Endereco endereco = new Endereco();
+            endereco.setBairro("Santa Felicidade");
+            endereco.setCidade(cidade);
+            endereco.setComplemento("Casa 1");
+            endereco.setNumero(320);
+            endereco.setRua("Rua Boa vista da aparecida");
+            
+            usuario.setEndereco(endereco);
+            usuarioDAO.insertUsuario(usuario);
+        
     }
     
 }
