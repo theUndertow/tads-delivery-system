@@ -30,6 +30,8 @@ public class Autenticacao implements PhaseListener{
         FacesContext context = event.getFacesContext();
         if ("/index.xhtml".equals(context.getViewRoot().getViewId()))
             return;
+        if ("/cadastro.xhtml".equals(context.getViewRoot().getViewId()))
+            return;
         LoginManbe loginManbe = context.getApplication().
         evaluateExpressionGet(context, "#{loginManbe}", LoginManbe.class);
         if (!loginManbe.isLogado()) {
