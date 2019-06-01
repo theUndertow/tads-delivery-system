@@ -7,15 +7,14 @@
     </h:head>
     <h:body>
         Faça o login
-        <h:body>
         <h:form>
             <p>Username:<h:inputText id="login" value="#{loginManbe.login}" required="true" requiredMessage="Usuário precisa estar preenchido"/></p>
             <p>Password:<h:inputSecret id="password" value="#{loginManbe.password}" required="true" requiredMessage="Senha precisa estar preenchida"/></p>
             <p><h:commandButton action="#{loginManbe.verifyLogin}" value="Submiter"/></p>
         </h:form>
         <h:message style="color:red" for="login" showSummary="true"/><br/>
-        <h:message  style="color:red" for="password" showSummary="true"/>
-    </h:body>
+        <h:message  style="color:red" for="password" showSummary="true"/>  
+        <h:outputLink value="cadastro.xhtml">Cadastro</h:outputLink>
     </h:body>
 </html>
 

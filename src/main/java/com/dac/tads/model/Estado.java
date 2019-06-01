@@ -7,6 +7,7 @@ package com.dac.tads.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Table;
 import javax.persistence.CascadeType;
@@ -72,5 +73,27 @@ public class Estado implements Serializable {
     public void setCidades(List<Cidade> cidades) {
         this.cidades = cidades;
     }
-
+    
+    @Override
+    public int hashCode() {
+        return sigla.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Estado other = (Estado) obj;
+        if (!Objects.equals(this.sigla, other.sigla)) {
+            return false;
+        }
+        return true;
+    }
 }
