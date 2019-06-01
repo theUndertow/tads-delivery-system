@@ -167,7 +167,7 @@ public class TesteTads {
         */
         
         // INSERÇÃO DE USUARIO
-        
+        /*
             Usuario usuario = new Usuario();
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             MDFive md5 = new MDFive();
@@ -192,7 +192,7 @@ public class TesteTads {
             
             usuario.setEndereco(endereco);
             usuarioDAO.insertUsuario(usuario);
-        
+        */
     }
     
 }
