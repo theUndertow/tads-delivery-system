@@ -8,7 +8,35 @@
     </h:head>
     <h:body>
         <h1>Cadastro</h1>
+        <h:outputText value="#{cadastroManbe.error}" style="color:red"/>
+        <h:outputLink value="index.xhtml">voltar</h:outputLink>
         <h:form>
+            <p><h:outputLabel for="email">Email: </h:outputLabel>
+                <h:inputText id="email" value="#{cadastroManbe.usuario.email}"/></p>
+            <p><h:outputLabel for="senha">Senha: </h:outputLabel>
+                <h:inputSecret id="senha" value="#{cadastroManbe.usuario.senha}"/></p>
+            <p><h:outputLabel for="cpf">CPF: </h:outputLabel>
+                <h:inputText id="cpf" value="#{cadastroManbe.usuario.cpf}"/></p>
+            <p><h:outputLabel for="nome">Nome: </h:outputLabel>
+                <h:inputText id="nome" value="#{cadastroManbe.usuario.nome}"/></p>
+            <p><h:outputLabel for="telefone">telefone: </h:outputLabel>
+                <h:inputText id="telefone" value="#{cadastroManbe.usuario.telefone}"/></p>
+            <p>Tipo:
+                <h:selectOneRadio id="usuario-tipo" value="#{cadastroManbe.usuario.tipo}">
+                    <p><f:selectItem itemLabel="Gerente" itemValue="g" /></p>
+                    <p><f:selectItem itemLabel="Entregador" itemValue="e" /></p>
+                </h:selectOneRadio>
+            </p>
+            <hr></hr>
+            <h3>Endereço</h3>
+            <p><h:outputLabel for="rua">Rua: </h:outputLabel>
+                <h:inputText id="rua" value="#{cadastroManbe.endereco.rua}"/></p>
+            <p><h:outputLabel for="numero">Número: </h:outputLabel>
+                <h:inputText id="numero" value="#{cadastroManbe.endereco.numero}"/></p>
+            <p><h:outputLabel for="complemento">Complemento: </h:outputLabel>
+                <h:inputText id="complemento" value="#{cadastroManbe.endereco.complemento}"/></p>
+            <p><h:outputLabel for="bairro">Bairro: </h:outputLabel>
+                <h:inputText id="bairro" value="#{cadastroManbe.endereco.bairro}"/></p>
             <p>Estado
                 <h:selectOneMenu id="comboEstado" value="#{cadastroManbe.estadoSelecionado}" converter="estadoConverter">
                     <f:selectItems value="#{cadastroManbe.listaEstados}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado}"/>
@@ -19,6 +47,7 @@
                     <f:selectItems value="#{cadastroManbe.listaCidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
                 </h:selectOneMenu>
             </p>
+            <h:commandButton action="#{cadastroManbe.cadastroUsuario()}" value="Submit"/>
         </h:form>
     </h:body>
 </html>
