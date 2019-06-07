@@ -7,15 +7,11 @@ package com.dac.tads.manbe;
 
 import com.dac.tads.criptografia.MDFive;
 import com.dac.tads.facade.CadastroFacade;
-import com.dac.tads.model.Cidade;
-import com.dac.tads.model.Endereco;
-import com.dac.tads.model.Entregador;
-import com.dac.tads.model.Estado;
-import com.dac.tads.model.Gerente;
-import com.dac.tads.model.Usuario;
+import com.dac.tads.model.*;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 /**
@@ -23,14 +19,13 @@ import javax.inject.Named;
  * @author marco
  */
 @Named(value = "cadastroManbe")
-@RequestScoped
-public class CadastroManbe {
+@ViewScoped
+public class CadastroManbe implements Serializable{
 
     private List<Estado> listaEstados;
     private List<Cidade> listaCidades;
     private Estado estadoSelecionado;
     private Cidade cidadeSelecionada;
-    private CadastroFacade cadastroFacade;
     private Usuario usuario;
     private Gerente gerente;
     private Entregador entregador;
@@ -67,14 +62,6 @@ public class CadastroManbe {
 
     public void setCidadeSelecionada(Cidade cidadeSelecionada) {
         this.cidadeSelecionada = cidadeSelecionada;
-    }
-
-    public CadastroFacade getCadastroFacade() {
-        return cadastroFacade;
-    }
-
-    public void setCadastroFacade(CadastroFacade cadastroFacade) {
-        this.cadastroFacade = cadastroFacade;
     }
 
     public Usuario getUsuario() {
@@ -120,24 +107,23 @@ public class CadastroManbe {
     @PostConstruct
     public void init() {
         //initiate objects
-        cadastroFacade = new CadastroFacade();
         usuario = new Usuario();
         gerente = new Gerente();
         endereco = new Endereco();
         entregador = new Entregador();
 
-        listaEstados = cadastroFacade.selectAllState();
-        estadoSelecionado = cadastroFacade.selectStateId(Long.parseLong("10"));
-        listaCidades = cadastroFacade.selectAllCityById(estadoSelecionado.getId());
+        listaEstados = CadastroFacade.selectAllState();
+        estadoSelecionado = CadastroFacade.selectStateId(Long.parseLong("10"));
+        listaCidades = CadastroFacade.selectAllCityById(estadoSelecionado.getId());
     }
 
     public void buscarCidades() {
         if (estadoSelecionado != null) {
-            listaCidades = cadastroFacade.selectAllCityById(estadoSelecionado.getId());
+            listaCidades = CadastroFacade.selectAllCityById(estadoSelecionado.getId());
         }
     }
 
-    public void cadastroUsuario() {
+    public String cadastroUsuario() {
         // Check the type of a user to add a database
         // encrypt the actual pass 
         String newPass = MDFive.encripta(usuario.getSenha());
@@ -149,14 +135,18 @@ public class CadastroManbe {
         usuario.setEndereco(endereco);
         
         if (usuario.getTipo() == 'g') {
-            cadastroGerente();
+            usuario = cadastroGerente();
         } else if (usuario.getTipo() == 'e') {
-            cadastroEntregador();
+            usuario = cadastroEntregador();
+        } else{
+            return "";
         }
+        
+        error = CadastroFacade.registerUsuario(usuario);
+        return "./gerente.xhtml";
     }
 
-    private void cadastroGerente() {
-        System.out.println("\n\n\n\n\n\n\nGERENTE");
+    private Usuario cadastroGerente() {
      
         // Set user to a manager 
         usuario.setGerente(gerente);
@@ -165,13 +155,11 @@ public class CadastroManbe {
         gerente.setUsuario(usuario);
         
         // Pass the user and employee to facade to make the register
-        error = cadastroFacade.registerGerente(usuario, gerente);
+        return usuario;
     }
 
-    private void cadastroEntregador() {
+    private Usuario cadastroEntregador() {
 
-        System.out.println("\n\n\n\n\n\n\nENTREGADOR");
-        
         // Set user to a deliveryman 
         usuario.setEntregador(entregador);
 
@@ -179,6 +167,6 @@ public class CadastroManbe {
         entregador.setUsuario(usuario);
         
         // Pass the user and employee to facade to make the register
-        error = cadastroFacade.registerEntregador(usuario, entregador);
+        return usuario;
     }
 }

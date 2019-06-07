@@ -5,6 +5,7 @@
  */
 package com.dac.tads.manbe;
 
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -15,7 +16,7 @@ import javax.inject.Named;
  */
 @Named(value = "gerenteManbe")
 @RequestScoped
-public class GerenteManbe {
+public class GerenteManbe implements Serializable{
     public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "index?faces-redirect=true";

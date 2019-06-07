@@ -8,17 +8,18 @@ package com.dac.tads.manbe;
 import com.dac.tads.criptografia.MDFive;
 import com.dac.tads.facade.LoginFacade;
 import com.dac.tads.model.Usuario;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 /**
  *
  * @author marco
  */
+@SessionScoped
 @Named(value = "loginManbe")
-@RequestScoped
-public class LoginManbe {
+public class LoginManbe implements Serializable{
     private String login;
     private String password;
     private Usuario usuario;

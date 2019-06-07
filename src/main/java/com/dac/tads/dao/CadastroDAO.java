@@ -29,6 +29,51 @@ public class CadastroDAO {
         } catch (HibernateException e) {
             e.printStackTrace();
         }
-        return (users.isEmpty()) ? true : false;
+        return (users.isEmpty());
+    }
+    
+    public boolean validateCPF(Usuario user){
+        List<Usuario> users = null;
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery(
+                    "from Usuario where usuario_cpf = :cpf").setParameter("cpf", user.getCpf());
+            users =  query.list();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return (users.isEmpty());
+    }
+    
+    public boolean validateEmailUpdate(String email){
+        List<Usuario> users = null;
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery(
+                    "from Usuario where usuario_email = :email").setParameter("email", email);
+            users =  query.list();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return (users.isEmpty());
+    }
+
+    public boolean validateCPFUpdate(String cpf){
+        List<Usuario> users = null;
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery(
+                    "from Usuario where usuario_cpf = :cpf").setParameter("cpf", cpf);
+            users =  query.list();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return (users.isEmpty());
     }
 }
