@@ -97,14 +97,19 @@ public class CadastroFacade {
 
         user.setCpf(cpf);
         user.setEmail(email);
-        usuarioDAO.insertUsuario(user);
+        usuarioDAO.updateUsuario(user);
         if (user.getTipo() == 'g') {
-            gerenteDAO.insertGerente(user.getGerente());
+            gerenteDAO.updateGerente(user.getGerente());
         } else if (user.getTipo() == 'e') {
-            entregadorDAO.insertEntregador(user.getEntregador());
+            entregadorDAO.updateEntregador(user.getEntregador());
         }
 
         return "";
+    }
+    
+    public static List<Entregador> listAllEntradores(){
+        EntregadorDAO entregadorDAO = new EntregadorDAO();
+        return entregadorDAO.selectListEntregador();
     }
 
 }

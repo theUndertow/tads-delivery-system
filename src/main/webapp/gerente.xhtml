@@ -7,9 +7,12 @@
     </h:head>
     <h:body>
         Hello from Gerente
-        <h:outputLink value="cadastro.xhtml" >Cadastrar usuários (gerente e entregador)</h:outputLink>
+        <p><h:outputLink value="cadastro.xhtml" >Cadastrar usuários (gerente e entregador)</h:outputLink></p>
+        <p><h:outputLink value="alteracao_cliente_lista.xhtml" >Alteração clientes</h:outputLink></p>
+        <p><h:outputLink value="alteracao_gerente.xhtml" >Alterar gerente</h:outputLink></p>
+        
         <h:form>
-            <h:commandButton value="Logout" action="#{gerenteManbe.logout()}"/>
+            <p><h:commandButton value="Logout" action="#{gerenteManbe.logout()}"/></p>
         </h:form>
     </h:body>
 </html>
