@@ -97,7 +97,7 @@ public class Entrega implements Serializable {
     }
     
     @ManyToOne
-    @JoinColumn(name = "entrega_entregador", nullable = false)
+    @JoinColumn(name = "entrega_entregador")
     public Entregador getEntregador() {
         return entregador;
     }

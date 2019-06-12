@@ -5,6 +5,10 @@
  */
 package com.dac.tads.ws;
 
+import com.dac.tads.facade.CadastroEntregaFacade;
+import com.dac.tads.util.StrangerCoisa;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -57,7 +61,11 @@ public class pedidoWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public String postOrder(String pedido){
         if(pedido!=null){
-            return pedido ;
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            StrangerCoisa strangerCoisa = gson.fromJson(pedido, StrangerCoisa.class);
+            //fazer a inserção da entrega com endereço e historico
+            CadastroEntregaFacade.insertEntrega(strangerCoisa);
+            return pedido;
         }else{
             return "NAO DEU";
         }
