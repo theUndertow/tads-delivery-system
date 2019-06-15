@@ -11,37 +11,38 @@ import com.dac.tads.dao.EntregaDAO;
 import com.dac.tads.dao.EntregadorDAO;
 import com.dac.tads.dao.HistoricoDAO;
 import com.dac.tads.model.*;
+import com.dac.tads.util.Coisa;
+import com.dac.tads.util.Delivery;
 import com.dac.tads.util.StrangerCoisa;
 import java.util.Date;
 import java.util.List;
-
-
 
 /**
  *
  * @author marco
  */
 public class EntregaFacade {
-    public static void insertEntrega(StrangerCoisa strangerCoisa){
+
+    public static void insertEntrega(StrangerCoisa strangerCoisa) {
         HistoricoDAO historicoDAO = new HistoricoDAO();
         EntregaDAO entregaDAO = new EntregaDAO();
         CidadeDAO cidadeDAO = new CidadeDAO();
         EnderecoDAO enderecoDAO = new EnderecoDAO();
-        
+
         Entrega entrega = new Entrega();
         Historico historico = new Historico();
         Cidade cidade = cidadeDAO.selectCidade(strangerCoisa.getCidade().getId());
-        
+
         Endereco endereco = new Endereco();
-        
+
         endereco.setCidade(cidade);
         endereco.setBairro(strangerCoisa.getEndereco().getBairro());
         endereco.setComplemento(strangerCoisa.getEndereco().getComplemento());
         endereco.setNumero(strangerCoisa.getEndereco().getNumero());
         endereco.setRua(strangerCoisa.getEndereco().getRua());
-        
+
         enderecoDAO.insertEndereco(endereco);
-        
+
         // Set atributos para entrega
         entrega.setEndereco(endereco);
         entrega.setNum_pedido(strangerCoisa.getPedido().getId());
@@ -49,42 +50,68 @@ public class EntregaFacade {
                 .equals("Pago") ? "Aguardando" : "Indefinido"));
         entrega.setDestinatario(strangerCoisa.getUsuario().getNome());
         entrega.setData(strangerCoisa.getPedido().getTempo());
-        
+
         //Set atributos para historico
         historico.setEntrega(entrega);
         historico.setHistorico(entrega.getDescricao());
         Date date = new Date();
         historico.setTempo(date);
-        
+
         entrega.setHistorico(historico);
-        
+
         historicoDAO.insertHistorico(historico);
         entregaDAO.insertEntrega(entrega);
     }
-    
-    public static List<Entrega> listAllWaiting(){
+
+    public static List<Entrega> listAllWaiting() {
         return EntregaDAO.listaAllWaiting();
     }
-    
-    public static Entrega selectDelivery(int id){
+
+    public static Entrega selectDelivery(int id) {
         return EntregaDAO.selectEntrega(id);
     }
-    
-    public static List<Entrega> listToDeliveryman(Entregador deliveryman){
+
+    public static List<Entrega> listToDeliveryman(Entregador deliveryman) {
         return EntregadorDAO.listToDeliveryman(deliveryman);
     }
-    
-    public static boolean assingDelivery(Entrega delivery, Entregador deliveryman){
-        
+
+    public static boolean assingDelivery(Entrega delivery, Entregador deliveryman) {
+
         List<Entrega> deliveries = EntregadorDAO.listToDeliveryman(deliveryman);
-        
-        if(deliveries.size() < 5){
+
+        if (deliveries.size() < 5) {
             EntregaDAO entregaDAO = new EntregaDAO();
+            delivery.setDescricao("Em Entrega");
             delivery.setEntregador(deliveryman);
             entregaDAO.updateEntrega(delivery);
-        }else{
+        } else {
             return false;
         }
         return true;
+    }
+
+    public static void updateDeliveries(List<Entrega> listaEntregasAlterados) {
+        EntregaDAO entregaDAO = new EntregaDAO();
+
+        for (Entrega e : listaEntregasAlterados) {
+            if (e.getDescricao().equals("Entregue")) {
+                Coisa coisa = new Coisa();
+                coisa.setEstado(e.getDescricao());
+                coisa.setId_pedido(e.getNum_pedido());
+                Delivery.updateDelivery(coisa);
+                entregaDAO.updateEntrega(e);
+            }
+        }
+    }
+
+    public static void reasonFailShippment(Entrega entrega) {
+        EntregaDAO entregaDAO = new EntregaDAO();
+        Coisa coisa = new Coisa();
+        
+        coisa.setEstado(entrega.getDescricao());
+        coisa.setId_pedido(entrega.getNum_pedido());
+        coisa.setMotivo(entrega.getMotivo());
+        Delivery.updateDelivery(coisa);
+        entregaDAO.updateEntrega(entrega);
     }
 }

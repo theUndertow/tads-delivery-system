@@ -16,15 +16,15 @@ import javax.faces.event.PhaseListener;
  *
  * @author marco
  */
-public class Autenticacao implements PhaseListener{
+public class Autenticacao implements PhaseListener {
 
     private static final long serialVersionUID = 1;
-    
+
     @Override
     public void beforePhase(PhaseEvent event) {
-        
+
     }
-    
+
     @Override
     public void afterPhase(PhaseEvent event) {
         FacesContext context = event.getFacesContext();
@@ -34,16 +34,16 @@ public class Autenticacao implements PhaseListener{
             return;
         LoginManbe loginManbe = context.getApplication().
         evaluateExpressionGet(context, "#{loginManbe}", LoginManbe.class);
-        if (!loginManbe.isLogado()) {
-            NavigationHandler handler = context.getApplication().
-            getNavigationHandler();
+            if (!loginManbe.isLogado()) {
+                NavigationHandler handler = context.getApplication().
+                        getNavigationHandler();
             handler.handleNavigation(context, null,"index?faces-redirect=true");
-            // renderiza a tela
-            context.renderResponse();
-        }
-        
+                // renderiza a tela
+                context.renderResponse();
+            }
+
     }
-    
+
     @Override
     public PhaseId getPhaseId() {
         return PhaseId.RESTORE_VIEW;

@@ -24,13 +24,15 @@ import javax.inject.Named;
  */
 @Named(value = "entregadorManbe")
 @ViewScoped
-public class EntregadorManbe implements Serializable{
-    
+public class EntregadorManbe implements Serializable {
+
     private List<Entrega> listaEntregasAguardando;
     private List<Entrega> listaEntregasEntregador;
+    private List<Entrega> listaEntregasAlterados;
     private int idInput;
     private Entregador entregador;
     private String error;
+    private String info;
 
     public List<Entrega> getListaEntregasAguardando() {
         return listaEntregasAguardando;
@@ -64,6 +66,22 @@ public class EntregadorManbe implements Serializable{
         this.error = error;
     }
 
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public LoginManbe getLoginManbe() {
+        return loginManbe;
+    }
+
+    public void setLoginManbe(LoginManbe loginManbe) {
+        this.loginManbe = loginManbe;
+    }
+
     public int getIdInput() {
         return idInput;
     }
@@ -71,38 +89,39 @@ public class EntregadorManbe implements Serializable{
     public void setIdInput(int idInput) {
         this.idInput = idInput;
     }
-    
-    @Inject 
+
+    @Inject
     LoginManbe loginManbe;
-    
+
     @PostConstruct
-    public void init(){
-        if(loginManbe.getUsuario().getTipo() == 'e'){
+    public void init() {
+        if (loginManbe.getUsuario().getTipo() == 'e') {
             entregador = loginManbe.getUsuario().getEntregador();
             listaEntregasEntregador = EntregaFacade.listToDeliveryman(entregador);
-        }else{
+        } else {
             entregador = new Entregador();
             listaEntregasEntregador = new ArrayList<>();
         }
         listaEntregasAguardando = EntregaFacade.listAllWaiting();
+        listaEntregasAlterados = new ArrayList<>();
     }
-    
+
     public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "index?faces-redirect=true";
     }
-    
-    public String atribuirEntrega(Entrega entrega){
-        
-        if(EntregaFacade.assingDelivery(entrega, entregador)){
+
+    public String atribuirEntrega(Entrega entrega) {
+
+        if (EntregaFacade.assingDelivery(entrega, entregador)) {
             return "entregador_lista_entrega.xhtml";
-        }else{
+        } else {
             this.error = "Entregador atingiu o limite de entregas que possuir. Favor entregar ou cancelar alguma de suas entregas, por favor.";
             return "entregador.xhtml";
         }
     }
-    
-    public void buscaPedido(){
+
+    public void buscaPedido() {
         Entrega temp = EntregaFacade.selectDelivery(idInput);
         if (temp != null) {
             int i = 0;
@@ -116,8 +135,8 @@ public class EntregadorManbe implements Serializable{
             }
         }
     }
-    
-    public void buscaPedidoEntregador(){
+
+    public void buscaPedidoEntregador() {
         Entrega temp = EntregaFacade.selectDelivery(idInput);
         if (temp != null) {
             int i = 0;
@@ -131,11 +150,44 @@ public class EntregadorManbe implements Serializable{
             }
         }
     }
-    
-    public String details(Entrega entrega){
-        
+
+    public String details(Entrega entrega) {
+
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("entregaDetail", entrega);
         return "visualizacao_entrega";
     }
-        
+
+    public void infoToSave(Entrega entrega) {
+        this.info = "Clique no botão Salvar para que as alterações sejam feitas no sistema";
+        int i = 0;
+
+        if (!listaEntregasAlterados.contains(entrega)) {
+            listaEntregasAlterados.add(entrega);
+        } else {
+            for (Entrega e : listaEntregasAlterados) {
+                if (e.equals(entrega)) {
+                    listaEntregasAlterados.set(i, entrega);
+                    break;
+                }
+                i++;
+            }
+        }
+    }
+
+    public void saveNewListSystem() {
+
+        if (!listaEntregasAlterados.isEmpty()) {
+            EntregaFacade.updateDeliveries(listaEntregasAlterados);
+        }
+        this.info = "Salvo com sucesso meu filho";
+    }
+
+    public String failShippment(Entrega entrega) {
+        if (entrega.getDescricao().equals("Em Entrega")) {
+            entrega.setDescricao("Não Entregue");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("entregaFail", entrega);
+            return "falha_entrega";
+        }
+        return "";
+    }
 }

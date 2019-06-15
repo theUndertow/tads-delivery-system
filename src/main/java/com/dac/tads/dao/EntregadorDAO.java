@@ -105,8 +105,9 @@ public class EntregadorDAO {
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("from Entrega where entrega_entregador = :id_entregador")
-                    .setParameter("id_entregador", deliveryman.getId());
+            Query query = session.createQuery("from Entrega where "
+                    + "entrega_entregador = :id_entregador and entrega_descricao =:descricao")
+                    .setParameter("id_entregador", deliveryman.getId()).setParameter("descricao", "Em Entrega");
             deliveries = query.list();
             session.getTransaction().commit();
             session.close();
