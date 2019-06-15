@@ -5,6 +5,7 @@
  */
 package com.dac.tads.dao;
 
+import com.dac.tads.model.Entrega;
 import com.dac.tads.model.Entregador;
 import com.dac.tads.util.HibernateUtil;
 import java.util.List;
@@ -97,5 +98,22 @@ public class EntregadorDAO {
             return false;
         }
         return true;
+    }
+    
+    public static List<Entrega> listToDeliveryman(Entregador deliveryman){
+        List<Entrega> deliveries;
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from Entrega where entrega_entregador = :id_entregador")
+                    .setParameter("id_entregador", deliveryman.getId());
+            deliveries = query.list();
+            session.getTransaction().commit();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return deliveries;
     }
 }

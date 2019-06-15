@@ -7,18 +7,16 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Entregador
         <h:form>
-            <h:commandButton value="Logout" action="#{entregadorManbe.logout()}"/>
-            <h:commandLink action="entregador_lista_entrega">Ver minhas entregas</h:commandLink>
+            <h:commandButton value="Logout" action="#{entregadorManbe.logout()}"/><br></br>
+            <h:commandLink action="entregador">Voltar home</h:commandLink>
         </h:form>
-        <h2>#{entregadorManbe.error}</h2>
         <h:form id="form">
             Pesquisar por id <h:inputText id="id_entrega" value="#{entregadorManbe.idInput}"/>
             <h:commandButton value="Pesquisar">
-                <f:ajax listener="#{entregadorManbe.buscaPedido()}" execute="id_entrega" render=":form:entrega"/>
+                <f:ajax listener="#{entregadorManbe.buscaPedidoEntregador()}" execute="id_entrega" render=":form:entrega"/>
             </h:commandButton>
-            <h:dataTable id="entrega" value="#{entregadorManbe.listaEntregasAguardando}" var="entrega">
+            <h:dataTable id="entrega" value="#{entregadorManbe.listaEntregasEntregador}" var="entrega">
                 <h:column>
                     <f:facet name="header">Id entrega: </f:facet>
                         #{entrega.id}
@@ -36,8 +34,8 @@
                         #{entrega.destinatario}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Action </f:facet>
-                    <h:commandButton value="Atribuir entrega" action="#{entregadorManbe.atribuirEntrega(entrega)}" />
+                    <f:facet name="header">Detalhes da entrega </f:facet>
+                        #{entrega.destinatario}
                 </h:column>
                 <h:column>
                     <f:facet name="header">Action </f:facet>

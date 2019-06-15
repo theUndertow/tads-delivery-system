@@ -27,6 +27,7 @@ import javax.persistence.Temporal;
 @Table(name = "tb_entrega")
 public class Entrega implements Serializable {
     private long id;
+    private long num_pedido;
     private String descricao;
     private String destinatario;
     private Date data;
@@ -48,6 +49,17 @@ public class Entrega implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
+
+    @Column(name = "entrega_num_pedido")
+    public long getNum_pedido() {
+        return num_pedido;
+    }
+
+    public void setNum_pedido(long num_pedido) {
+        this.num_pedido = num_pedido;
+    }
+    
+    
 
     @Column(name = "entrega_descricao")
     public String getDescricao() {

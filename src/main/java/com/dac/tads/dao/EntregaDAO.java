@@ -35,7 +35,7 @@ public class EntregaDAO {
     }
 
     // Retornará um único entrega
-    public Entrega selectEntrega(int id) {
+    public static Entrega selectEntrega(int id) {
         Entrega entrega = null;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -52,7 +52,7 @@ public class EntregaDAO {
     }
     
     // Retorna uma lista de todos os entregas
-    public List<Entrega> selectListEntrega() {
+    public static List<Entrega> selectListEntrega() {
         List<Entrega> entregas;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -97,5 +97,22 @@ public class EntregaDAO {
             return false;
         }
         return true;
+    }
+    
+    public static List<Entrega> listaAllWaiting(){
+        List<Entrega> entregas;
+        String HQL = "from Entrega where entrega_descricao = :descricao and entrega_entregador is null";
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery(HQL).setParameter("descricao", "Aguardando");
+            entregas = query.list();
+            session.getTransaction().commit();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return entregas;
     }
 }

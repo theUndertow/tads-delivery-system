@@ -5,7 +5,7 @@
  */
 package com.dac.tads.ws;
 
-import com.dac.tads.facade.CadastroEntregaFacade;
+import com.dac.tads.facade.EntregaFacade;
 import com.dac.tads.util.StrangerCoisa;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -64,7 +64,7 @@ public class pedidoWebService {
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             StrangerCoisa strangerCoisa = gson.fromJson(pedido, StrangerCoisa.class);
             //fazer a inserção da entrega com endereço e historico
-            CadastroEntregaFacade.insertEntrega(strangerCoisa);
+            EntregaFacade.insertEntrega(strangerCoisa);
             return pedido;
         }else{
             return "NAO DEU";

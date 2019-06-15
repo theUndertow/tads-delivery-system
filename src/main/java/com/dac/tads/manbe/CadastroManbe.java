@@ -20,7 +20,7 @@ import javax.inject.Named;
  */
 @Named(value = "cadastroManbe")
 @ViewScoped
-public class CadastroManbe implements Serializable{
+public class CadastroManbe implements Serializable {
 
     private List<Estado> listaEstados;
     private List<Cidade> listaCidades;
@@ -133,27 +133,37 @@ public class CadastroManbe implements Serializable{
 
         // set address to the cliente
         usuario.setEndereco(endereco);
-        
+
         if (usuario.getTipo() == 'g') {
             usuario = cadastroGerente();
         } else if (usuario.getTipo() == 'e') {
             usuario = cadastroEntregador();
-        } else{
+        } else {
             return "";
         }
-        
+
         error = CadastroFacade.registerUsuario(usuario);
-        return "./gerente.xhtml";
+        if (error.equals("")) {
+            if (usuario.getTipo() == 'g') {
+                return "gerente.xhtml";
+            } else if (usuario.getTipo() == 'e') {
+                return "index.xhtml";
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
     }
 
     private Usuario cadastroGerente() {
-     
+
         // Set user to a manager 
         usuario.setGerente(gerente);
 
         // Set manager to a user
         gerente.setUsuario(usuario);
-        
+
         // Pass the user and employee to facade to make the register
         return usuario;
     }
@@ -165,7 +175,7 @@ public class CadastroManbe implements Serializable{
 
         // Set deliveryman to a user
         entregador.setUsuario(usuario);
-        
+
         // Pass the user and employee to facade to make the register
         return usuario;
     }
