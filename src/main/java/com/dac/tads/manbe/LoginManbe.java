@@ -78,4 +78,13 @@ public class LoginManbe implements Serializable{
     public void init(){
         usuario = new Usuario();
     }
+    
+    public String home(){
+        if(usuario.getTipo() == 'e'){
+            return "entregador";
+        }else if(usuario.getTipo() == 'g'){
+            return "gerente";
+        }
+        return null;
+    }
 }

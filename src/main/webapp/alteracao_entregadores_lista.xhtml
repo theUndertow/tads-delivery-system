@@ -17,11 +17,6 @@
                     <f:facet name="header">CPF do miliante </f:facet>
                         #{entregador.usuario.cpf}
                 </h:column>
-                <h:column>
-                    <f:facet name="header">Action </f:facet>
-                    <h:commandButton value="View" action="#{alteracaoEntregador.loadReport}"
-                         rendered="#{alteracaoEntregador.showPage(t.id)}" />
-                </h:column>
             </h:dataTable>
         </h:form>
     </h:body>

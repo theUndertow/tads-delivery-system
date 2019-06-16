@@ -8,7 +8,7 @@
     <h:body>
         <h:form>
             <h:commandButton value="Logout" action="#{entregadorManbe.logout()}"/><br></br>
-            <h:commandLink action="entregador">Voltar home</h:commandLink>
+            <h:commandLink action="#{loginManbe.home}" value="Voltar home"/>
         </h:form>
         
         <h3>Entregador Responsavel : </h3> #{entregaVisualizacao.responsavel}

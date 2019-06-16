@@ -1,18 +1,51 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         Hello from Gerente
         <p><h:outputLink value="cadastro.xhtml" >Cadastrar usuários (gerente e entregador)</h:outputLink></p>
-        <p><h:outputLink value="alteracao_cliente_lista.xhtml" >Alteração clientes</h:outputLink></p>
+        <p><h:outputLink value="alteracao_entregadores_lista.xhtml" >Alteração Entregadores</h:outputLink></p>
         <p><h:outputLink value="alteracao_gerente.xhtml" >Alterar gerente</h:outputLink></p>
-        
+
         <h:form>
             <p><h:commandButton value="Logout" action="#{gerenteManbe.logout()}"/></p>
+        </h:form>
+        <h:form id="form">
+            Pesquisar por id <h:inputText id="id_entrega" value="#{gerenteManbe.idInput}"/>
+            <h:commandButton value="Pesquisar">
+                <f:ajax listener="#{gerenteManbe.buscaPedido()}" execute="id_entrega" render=":form:entrega"/>
+            </h:commandButton>
+            <h:dataTable id="entrega" value="#{gerenteManbe.listaGerenteEntregas}" var="entrega">
+                <h:column>
+                    <f:facet name="header">Id entrega: </f:facet>
+                        #{entrega.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Situação: </f:facet>
+                        #{entrega.descricao}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Id Pedido </f:facet>
+                        #{entrega.num_pedido}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Cliente </f:facet>
+                        #{entrega.destinatario}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Entregador  </f:facet>
+                        #{(entrega.entregador != null) ? entrega.entregador.usuario.nome : 'Indefinido'}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Action </f:facet>
+                    <h:commandButton value="Detail" action="#{gerenteManbe.details(entrega)}" />
+                </h:column>
+            </h:dataTable>
         </h:form>
     </h:body>
 </html>

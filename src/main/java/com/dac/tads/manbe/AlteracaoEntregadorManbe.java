@@ -44,14 +44,7 @@ public class AlteracaoEntregadorManbe implements Serializable{
     
     @PostConstruct
     public void init(){
-//        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-//        id = request.getParameter("id");;
-//        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-//        if ("/alteracao_cliente_lista.xhtml/1".equals(viewId)){
-//            listaEntregadores = CadastroFacade.listAllEntradores();
-//        }else if(){
-//            ra 
-//       }
+        
     }
     
      

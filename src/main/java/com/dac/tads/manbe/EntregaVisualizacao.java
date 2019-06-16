@@ -8,6 +8,7 @@ package com.dac.tads.manbe;
 import com.dac.tads.model.Endereco;
 import com.dac.tads.model.Entrega;
 import com.dac.tads.model.Entregador;
+import com.dac.tads.model.Usuario;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -59,7 +60,7 @@ public class EntregaVisualizacao implements Serializable {
     public void setResponsavel(String responsavel) {
         this.responsavel = responsavel;
     }
-    
+
     @Inject
     LoginManbe loginManbe;
 
@@ -69,18 +70,12 @@ public class EntregaVisualizacao implements Serializable {
         entregador = new Entregador();
         entrega = new Entrega();
         endereco = new Endereco();
-
-        if (loginManbe.getUsuario().getTipo() == 'e') {
-            entregador = loginManbe.getUsuario().getEntregador();
-            entrega = (Entrega) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregaDetail");
-            
-            if(entrega.getEntregador() == null){
-                responsavel = "Esperando entregador";
-            }else{
-                responsavel = entregador.getUsuario().getNome();
-            }
-            
-            endereco = entrega.getEndereco();
+        entrega = (Entrega) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregaDetail");
+        
+        if(entrega.getEntregador() == null){
+            responsavel = "Esperando entregador";
+        }else{
+            responsavel = entrega.getEntregador().getUsuario().getNome();
         }
     }
 }

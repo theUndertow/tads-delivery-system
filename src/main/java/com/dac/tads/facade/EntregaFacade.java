@@ -114,4 +114,8 @@ public class EntregaFacade {
         Delivery.updateDelivery(coisa);
         entregaDAO.updateEntrega(entrega);
     }
+    
+    public static List<Entrega> listaAllDeliveriesToManager(){
+        return EntregaDAO.selectListEntrega();
+    }
 }
