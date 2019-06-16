@@ -70,4 +70,14 @@ public class GerenteManbe implements Serializable{
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("entregaDetail", entrega);
         return "visualizacao_entrega";
     }
+    
+    public String cancelDelivery(Entrega entrega){
+        if(entrega.getDescricao().equals("Aguardando") 
+                || entrega.getDescricao().equals("Em Entrega")){
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("entregaCancel", entrega);
+        return "cancelamento_entrega";
+        }else{
+            return "";
+        }
+    }
 }

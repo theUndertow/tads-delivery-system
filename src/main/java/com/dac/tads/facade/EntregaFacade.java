@@ -83,6 +83,10 @@ public class EntregaFacade {
             EntregaDAO entregaDAO = new EntregaDAO();
             delivery.setDescricao("Em Entrega");
             delivery.setEntregador(deliveryman);
+            Coisa coisa = new Coisa();
+            coisa.setEstado(delivery.getDescricao());
+            coisa.setId_pedido(delivery.getNum_pedido());
+            Delivery.updateDelivery(coisa);
             entregaDAO.updateEntrega(delivery);
         } else {
             return false;
@@ -107,15 +111,15 @@ public class EntregaFacade {
     public static void reasonFailShippment(Entrega entrega) {
         EntregaDAO entregaDAO = new EntregaDAO();
         Coisa coisa = new Coisa();
-        
+
         coisa.setEstado(entrega.getDescricao());
         coisa.setId_pedido(entrega.getNum_pedido());
         coisa.setMotivo(entrega.getMotivo());
         Delivery.updateDelivery(coisa);
         entregaDAO.updateEntrega(entrega);
     }
-    
-    public static List<Entrega> listaAllDeliveriesToManager(){
+
+    public static List<Entrega> listaAllDeliveriesToManager() {
         return EntregaDAO.selectListEntrega();
     }
 }

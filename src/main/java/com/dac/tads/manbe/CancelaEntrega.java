@@ -17,10 +17,9 @@ import javax.inject.Named;
  *
  * @author marco
  */
-@Named(value = "falhaEntrega")
+@Named(value = "cancelaEntrega")
 @ViewScoped
-public class FalhaEntregaManbe implements Serializable{
-    
+public class CancelaEntrega implements Serializable{
     private Entrega entrega;
 
     public Entrega getEntrega() {
@@ -34,17 +33,16 @@ public class FalhaEntregaManbe implements Serializable{
     
     @PostConstruct
     public void init(){
-        entrega = (Entrega) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregaFail");
+        entrega = (Entrega) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregaCancel");
     }
     
     public String failShippmentReason(){
         if(!entrega.getMotivo().equals("")){
+            entrega.setDescricao("Cancelado");
             EntregaFacade.reasonFailShippment(entrega);
-            return "entregador_lista_entrega";
+            return "gerente";
         }else{
             return "";
         }
     }
-
 }
-

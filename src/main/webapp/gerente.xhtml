@@ -45,6 +45,10 @@
                     <f:facet name="header">Action </f:facet>
                     <h:commandButton value="Detail" action="#{gerenteManbe.details(entrega)}" />
                 </h:column>
+                <h:column>
+                    <f:facet name="header">Action </f:facet>
+                    <h:commandButton value="Cancelar" action="#{gerenteManbe.cancelDelivery(entrega)}" />
+                </h:column>
             </h:dataTable>
         </h:form>
     </h:body>

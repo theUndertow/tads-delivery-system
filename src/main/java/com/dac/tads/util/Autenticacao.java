@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -16,6 +16,8 @@ import javax.faces.event.PhaseListener;
  *
  * @author marco
  */
+
+
 public class Autenticacao implements PhaseListener {
 
     private static final long serialVersionUID = 1;
@@ -28,19 +30,18 @@ public class Autenticacao implements PhaseListener {
     @Override
     public void afterPhase(PhaseEvent event) {
         FacesContext context = event.getFacesContext();
-        if ("/index.xhtml".equals(context.getViewRoot().getViewId()))
+        if ("/index.xhtml".equals(context.getViewRoot().getViewId())) {
             return;
-        if ("/cadastro.xhtml".equals(context.getViewRoot().getViewId()))
-            return;
+        }
         LoginManbe loginManbe = context.getApplication().
-        evaluateExpressionGet(context, "#{loginManbe}", LoginManbe.class);
-            if (!loginManbe.isLogado()) {
-                NavigationHandler handler = context.getApplication().
-                        getNavigationHandler();
-            handler.handleNavigation(context, null,"index?faces-redirect=true");
-                // renderiza a tela
-                context.renderResponse();
-            }
+                evaluateExpressionGet(context, "#{loginManbe}", LoginManbe.class);
+        if (!loginManbe.isLogado()) {
+            NavigationHandler handler = context.getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(context, null, "index?faces-redirect=true");
+            // renderiza a tela
+            context.renderResponse();
+        }
 
     }
 

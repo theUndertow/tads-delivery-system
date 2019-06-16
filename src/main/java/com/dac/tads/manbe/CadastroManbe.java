@@ -144,13 +144,7 @@ public class CadastroManbe implements Serializable {
 
         error = CadastroFacade.registerUsuario(usuario);
         if (error.equals("")) {
-            if (usuario.getTipo() == 'g') {
-                return "gerente.xhtml";
-            } else if (usuario.getTipo() == 'e') {
-                return "index.xhtml";
-            } else {
-                return "";
-            }
+            return "gerente.xhtml";
         } else {
             return "";
         }

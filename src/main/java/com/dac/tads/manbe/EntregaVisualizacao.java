@@ -71,7 +71,7 @@ public class EntregaVisualizacao implements Serializable {
         entrega = new Entrega();
         endereco = new Endereco();
         entrega = (Entrega) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregaDetail");
-        
+        endereco = entrega.getEndereco();
         if(entrega.getEntregador() == null){
             responsavel = "Esperando entregador";
         }else{
