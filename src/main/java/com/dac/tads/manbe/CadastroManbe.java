@@ -11,7 +11,10 @@ import com.dac.tads.model.*;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.NavigationHandler;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -103,9 +106,21 @@ public class CadastroManbe implements Serializable {
     public void setError(String error) {
         this.error = error;
     }
-
+    
+    @Inject
+    LoginManbe loginManbe;
+    
     @PostConstruct
     public void init() {
+        
+        if(loginManbe.getUsuario().getTipo() != 'g'){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "entregador?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }
+        
         //initiate objects
         usuario = new Usuario();
         gerente = new Gerente();

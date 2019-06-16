@@ -16,6 +16,8 @@ import com.dac.tads.model.Usuario;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.NavigationHandler;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -135,6 +137,13 @@ public class AlteracaoGerenteManbe implements Serializable{
     @PostConstruct
     public void init(){
         //initiate objects
+        if(loginManbe.getUsuario().getTipo() != 'g'){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "entregador?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }
         
         usuario = loginManbe.getUsuario();
         cpf = usuario.getCpf();

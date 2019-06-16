@@ -10,7 +10,9 @@ import com.dac.tads.model.Entregador;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -31,8 +33,25 @@ public class VisualizacaoEntregador implements Serializable{
         this.entregador = entregador;
     }
     
+    @Inject
+    LoginManbe loginManbe;
+    
     @PostConstruct
     public void init(){
         entregador = (Entregador) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregadorDetail");
+    
+        if(entregador == null && loginManbe.getUsuario().getTipo() == 'g'){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "gerente?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }else if(loginManbe.getUsuario().getTipo() != 'g'){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "entregador?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }
     }
 }

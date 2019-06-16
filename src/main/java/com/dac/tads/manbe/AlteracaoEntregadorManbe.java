@@ -11,8 +11,10 @@ import com.dac.tads.model.Entregador;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -39,8 +41,18 @@ public class AlteracaoEntregadorManbe implements Serializable{
         this.idInput = idInput;
     }
     
+    @Inject
+    LoginManbe loginManbe;
+    
     @PostConstruct
     public void init(){
+        if(loginManbe.getUsuario().getTipo() != 'g'){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "entregador?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }
         listaEntregadores = EntregadorFacade.listAllDeliveryman();
     }
     

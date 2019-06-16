@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -112,6 +113,15 @@ public class EntregadorManbe implements Serializable {
 
     @PostConstruct
     public void init() {
+        
+        if(loginManbe.getUsuario().getTipo()!= 'e'){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "gerente?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }
+        
         if (loginManbe.getUsuario().getTipo() == 'e') {
             entregador = loginManbe.getUsuario().getEntregador();
             listaEntregasEntregador = EntregaFacade.listToDeliveryman(entregador);
