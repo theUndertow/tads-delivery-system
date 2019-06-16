@@ -113,15 +113,15 @@ public class EntregadorManbe implements Serializable {
 
     @PostConstruct
     public void init() {
-        
-        if(loginManbe.getUsuario().getTipo()!= 'e'){
+
+        if (loginManbe.getUsuario().getTipo() != 'e') {
             NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
                     getNavigationHandler();
             handler.handleNavigation(FacesContext.getCurrentInstance(), null, "gerente?faces-redirect=true");
             // renderiza a tela
             FacesContext.getCurrentInstance().renderResponse();
         }
-        
+
         if (loginManbe.getUsuario().getTipo() == 'e') {
             entregador = loginManbe.getUsuario().getEntregador();
             listaEntregasEntregador = EntregaFacade.listToDeliveryman(entregador);
@@ -140,12 +140,11 @@ public class EntregadorManbe implements Serializable {
     }
 
     public String atribuirEntrega(Entrega entrega) {
-
-        if (EntregaFacade.assingDelivery(entrega, entregador)) {
+        this.error = EntregaFacade.assingDelivery(entrega, entregador);
+        if (this.error == null) {
             return "entregador_lista_entrega.xhtml";
         } else {
-            this.error = "Entregador atingiu o limite de entregas que possuir. Favor entregar ou cancelar alguma de suas entregas, por favor.";
-            return "entregador.xhtml";
+            return "";
         }
     }
 
@@ -178,7 +177,7 @@ public class EntregadorManbe implements Serializable {
             }
         }
     }
-    
+
     public void buscaTodosEntregador() {
         Entrega temp = EntregaFacade.selectDelivery(idInput);
         if (temp != null) {
@@ -220,9 +219,12 @@ public class EntregadorManbe implements Serializable {
     public void saveNewListSystem() {
 
         if (!listaEntregasAlterados.isEmpty()) {
-            EntregaFacade.updateDeliveries(listaEntregasAlterados);
+            this.error = EntregaFacade.updateDeliveries(listaEntregasAlterados);
+            if (this.error == null) {
+                this.info = "Salvo com sucesso meu filho";
+            }
         }
-        this.info = "Salvo com sucesso meu filho";
+        this.info = "Algo deu errado meu filho";
     }
 
     public String failShippment(Entrega entrega) {

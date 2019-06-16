@@ -19,7 +19,7 @@ import org.glassfish.jersey.jackson.JacksonFeature;
  * @author marco
  */
 public class Delivery {
-    public static boolean updateDelivery(Coisa coisa){
+    public static int updateDelivery(Coisa coisa){
         //criação do cliente que realiza a requisição
         Client client = ClientBuilder.newClient()
                 .register(RestObjectMapperProvider.class)
@@ -32,11 +32,7 @@ public class Delivery {
         Response response = invocationBuilder.post(Entity.json(coisa));
 
         //tratamento da rola da resposta do marcurelio
-        response.getStatus();
-        String value = response.readEntity(String.class);
-
-        System.out.println(value);
-        return false;
+        return response.getStatus();
     }
 }
 
