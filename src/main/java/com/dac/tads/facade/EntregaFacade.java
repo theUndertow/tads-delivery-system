@@ -122,4 +122,8 @@ public class EntregaFacade {
     public static List<Entrega> listaAllDeliveriesToManager() {
         return EntregaDAO.selectListEntrega();
     }
+    
+    public static List<Entrega> listAllToDeliveryman(Entregador entregador){
+        return EntregadorDAO.listAllToDeliveryman(entregador);
+    }
 }

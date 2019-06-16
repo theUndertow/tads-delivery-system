@@ -28,6 +28,7 @@ public class EntregadorManbe implements Serializable {
 
     private List<Entrega> listaEntregasAguardando;
     private List<Entrega> listaEntregasEntregador;
+    private List<Entrega> listaTodasEntregasEntregador;
     private List<Entrega> listaEntregasAlterados;
     private int idInput;
     private Entregador entregador;
@@ -48,6 +49,22 @@ public class EntregadorManbe implements Serializable {
 
     public void setListaEntregasEntregador(List<Entrega> listaEntregasEntregador) {
         this.listaEntregasEntregador = listaEntregasEntregador;
+    }
+
+    public List<Entrega> getListaTodasEntregasEntregador() {
+        return listaTodasEntregasEntregador;
+    }
+
+    public void setListaTodasEntregasEntregador(List<Entrega> listaTodasEntregasEntregador) {
+        this.listaTodasEntregasEntregador = listaTodasEntregasEntregador;
+    }
+
+    public List<Entrega> getListaEntregasAlterados() {
+        return listaEntregasAlterados;
+    }
+
+    public void setListaEntregasAlterados(List<Entrega> listaEntregasAlterados) {
+        this.listaEntregasAlterados = listaEntregasAlterados;
     }
 
     public Entregador getEntregador() {
@@ -98,6 +115,7 @@ public class EntregadorManbe implements Serializable {
         if (loginManbe.getUsuario().getTipo() == 'e') {
             entregador = loginManbe.getUsuario().getEntregador();
             listaEntregasEntregador = EntregaFacade.listToDeliveryman(entregador);
+            listaTodasEntregasEntregador = EntregaFacade.listAllToDeliveryman(entregador);
         } else {
             entregador = new Entregador();
             listaEntregasEntregador = new ArrayList<>();
@@ -144,6 +162,21 @@ public class EntregadorManbe implements Serializable {
                 if (e.getId() == temp.getId()) {
                     listaEntregasEntregador.remove(i);
                     listaEntregasEntregador.add(0, temp);
+                    break;
+                }
+                i++;
+            }
+        }
+    }
+    
+    public void buscaTodosEntregador() {
+        Entrega temp = EntregaFacade.selectDelivery(idInput);
+        if (temp != null) {
+            int i = 0;
+            for (Entrega e : listaTodasEntregasEntregador) {
+                if (e.getId() == temp.getId()) {
+                    listaTodasEntregasEntregador.remove(i);
+                    listaTodasEntregasEntregador.add(0, temp);
                     break;
                 }
                 i++;

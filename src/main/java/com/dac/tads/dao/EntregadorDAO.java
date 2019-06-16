@@ -36,14 +36,13 @@ public class EntregadorDAO {
     }
 
     // Retornará um único entregador
-    public Entregador selectEntregador(int id) {
+    public static Entregador selectEntregador(long id) {
         Entregador entregador = null;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery(
-                    "from Entregador where id = :id");
-            query.setInteger("id", id);
+                    "from Entregador where entregador_id = :id").setParameter("id", id);
             entregador = (Entregador) query.uniqueResult();
             session.close();
         } catch (HibernateException e) {
@@ -53,7 +52,7 @@ public class EntregadorDAO {
     }
     
     // Retorna uma lista de todos os entregadors
-    public List<Entregador> selectListEntregador() {
+    public static List<Entregador> selectListEntregador() {
         List<Entregador> entregadors;
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -108,6 +107,24 @@ public class EntregadorDAO {
             Query query = session.createQuery("from Entrega where "
                     + "entrega_entregador = :id_entregador and entrega_descricao =:descricao")
                     .setParameter("id_entregador", deliveryman.getId()).setParameter("descricao", "Em Entrega");
+            deliveries = query.list();
+            session.getTransaction().commit();
+            session.close();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return deliveries;
+    }
+    
+    public static List<Entrega> listAllToDeliveryman(Entregador deliveryman){
+        List<Entrega> deliveries;
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from Entrega where "
+                    + "entrega_entregador = :id_entregador")
+                    .setParameter("id_entregador", deliveryman.getId());
             deliveries = query.list();
             session.getTransaction().commit();
             session.close();
