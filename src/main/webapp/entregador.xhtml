@@ -1,35 +1,52 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
     <h:head>
-        <title>Facelet Title</title>
+        <title>Portal do Entregador</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     </h:head>
+
     <h:body>
-        Hello from Entregador
-        <h:form>
-            <h:commandButton value="Logout" action="#{entregadorManbe.logout()}"/>
-            <h:commandLink action="entregador_lista_entrega">Entregas a fazer</h:commandLink>
-            <h:commandLink action="entregador_lista_todas_entregas">Todas as entregas</h:commandLink>
-        </h:form>
+        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #017900">
+            <span class="navbar-brand mb-0 h1">TADS Delivery</span>
+            <div class="collapse navbar-collapse" id="navbarCliente">
+                <div class="navbar-nav">
+                    <h:outputLink value="entregador.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Portal do Entregador</h:outputLink>
+                    <h:outputLink value="entregador_lista_entrega.xhtml" styleClass="nav-item nav-link">Entregas Pendentes</h:outputLink>
+                    <h:outputLink value="entregador_lista_todas_entregas.xhtml" styleClass="nav-item nav-link">Todas as Entregas</h:outputLink>
+                </div>
+                <div class="navbar-nav ml-auto">
+                    <h:form>
+                        <h:commandButton value="Logout" action="#{entregadorManbe.logout()}" style="center" styleClass="btn btn-success m-3 nav-item"/>
+                    </h:form>
+                </div>
+            </div>
+        </nav>
         <h2>#{entregadorManbe.error}</h2>
         <h:form id="form">
-            Pesquisar por id <h:inputText id="id_entrega" value="#{entregadorManbe.idInput}"/>
-            <h:commandButton value="Pesquisar">
-                <f:ajax listener="#{entregadorManbe.buscaPedido()}" execute="id_entrega" render=":form:entrega"/>
-            </h:commandButton>
-            <h:dataTable id="entrega" value="#{entregadorManbe.listaEntregasAguardando}" var="entrega">
+            <div class="form-group row">
+                <h:outputLabel value="Pesquisar: " for="id_entrega" styleClass="col-sm-2" />
+                <h:inputText id="id_entrega" value="#{entregadorManbe.idInput}" styleClass="form-control col-sm-7"/>
+                <div class="col-sm-1" />
+                <h:commandButton value="Pesquisar" style="center" styleClass="btn btn-success col-sm-1">
+                    <f:ajax listener="#{entregadorManbe.buscaPedido()}" execute="id_entrega" render=":form:entrega"/>
+                </h:commandButton>
+            </div>
+            <h:dataTable id="entrega" value="#{entregadorManbe.listaEntregasAguardando}" var="entrega" styleClass="table">
                 <h:column>
-                    <f:facet name="header">Id entrega: </f:facet>
+                    <f:facet name="header">ID Entrega </f:facet>
                         #{entrega.id}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Situação: </f:facet>
+                    <f:facet name="header">Situação </f:facet>
                         #{entrega.descricao}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Id Pedido </f:facet>
+                    <f:facet name="header">ID Pedido </f:facet>
                         #{entrega.num_pedido}
                 </h:column>
                 <h:column>
@@ -37,12 +54,12 @@
                         #{entrega.destinatario}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Action </f:facet>
-                    <h:commandButton value="Atribuir entrega" action="#{entregadorManbe.atribuirEntrega(entrega)}" />
+                    <f:facet name="header">Ação </f:facet>
+                    <h:commandButton value="Atribuir Entrega" action="#{entregadorManbe.atribuirEntrega(entrega)}" />
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Action </f:facet>
-                    <h:commandButton value="Detail" action="#{entregadorManbe.details(entrega)}" />
+                    <f:facet name="header">Ação </f:facet>
+                    <h:commandButton value="Detalhes" action="#{entregadorManbe.details(entrega)}" />
                 </h:column>
             </h:dataTable>
         </h:form>
