@@ -1,19 +1,42 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
     <h:head>
-        <title>Tads</title>
+        <title>TADS</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     </h:head>
+
     <h:body>
-        Faça o login
-        <h:form>
-            <p>Username:<h:inputText id="login" value="#{loginManbe.login}" required="true" requiredMessage="Usuário precisa estar preenchido"/></p>
-            <p>Password:<h:inputSecret id="password" value="#{loginManbe.password}" required="true" requiredMessage="Senha precisa estar preenchida"/></p>
-            <p><h:commandButton action="#{loginManbe.verifyLogin}" value="Submiter"/></p>
-        </h:form>
-        <h:message style="color:red" for="login" showSummary="true"/><br/>
-        <h:message  style="color:red" for="password" showSummary="true"/> 
+
+        <div class="container-fluid mt-5" style="width: 50%">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h5>Login</h5>
+                </div>
+                <div class="card-body">
+                    <h:form>
+                        <div class="form-group">
+                            <h:outputLabel value="Usuario: " for="login"/>
+                            <h:inputText id="login" value="#{loginManbe.login}" required="true" requiredMessage="Usuário precisa estar preenchido" styleClass="form-control"/>
+                            <h:message for="login" style="color: red" />
+                        </div>
+                        <div class="form-group">                        
+                            <h:outputLabel value="Senha: " for="password" />
+                            <h:inputSecret id="password" value="#{loginManbe.password}" required="true" requiredMessage="Senha precisa estar preenchida" styleClass="form-control"/>
+                            <h:message for="password" style="color: red" role="alert"/>
+                        </div>
+                        <div class="mx-auto">
+                            <h:commandButton action="#{loginManbe.verifyLogin}" value="Entrar" style="center" styleClass="btn btn-success m-3"/>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
     </h:body>
 </html>
 
