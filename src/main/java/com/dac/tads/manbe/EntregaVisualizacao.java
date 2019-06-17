@@ -12,6 +12,7 @@ import com.dac.tads.model.Usuario;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -67,10 +68,19 @@ public class EntregaVisualizacao implements Serializable {
     @PostConstruct
     public void init() {
 
-        entregador = new Entregador();
-        entrega = new Entrega();
-        endereco = new Endereco();
         entrega = (Entrega) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregaDetail");
+        
+        if(entrega == null){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            if(loginManbe.getUsuario().getTipo() == 'e'){
+                handler.handleNavigation(FacesContext.getCurrentInstance(), null, "entregador?faces-redirect=true");
+            }
+            if(loginManbe.getUsuario().getTipo() == 'g'){
+                handler.handleNavigation(FacesContext.getCurrentInstance(), null, "gerente?faces-redirect=true");
+            }
+            FacesContext.getCurrentInstance().renderResponse();
+        }
         endereco = entrega.getEndereco();
         if(entrega.getEntregador() == null){
             responsavel = "Esperando entregador";

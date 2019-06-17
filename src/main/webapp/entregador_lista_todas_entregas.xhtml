@@ -16,8 +16,8 @@
             <div class="collapse navbar-collapse" id="navbarCliente">
                 <div class="navbar-nav">
                     <h:outputLink value="entregador.xhtml" styleClass="nav-item nav-link">Portal do Entregador</h:outputLink>
-                    <h:outputLink value="entregador_lista_entrega.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Entregas Pendentes</h:outputLink>
-                    <h:outputLink value="entregador_lista_todas_entregas.xhtml" styleClass="nav-item nav-link">Todas as Entregas</h:outputLink>
+                    <h:outputLink value="entregador_lista_entrega.xhtml" styleClass="nav-item nav-link">Entregas Pendentes</h:outputLink>
+                    <h:outputLink value="entregador_lista_todas_entregas.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Todas as Entregas</h:outputLink>
                 </div>
                 <div class="navbar-nav ml-auto">
                     <h:form>
@@ -33,16 +33,12 @@
                 <h:inputText id="id_entrega" value="#{entregadorManbe.idInput}" styleClass="form-control col-sm-7"/>
                 <div class="col-sm-1" />
                 <h:commandButton value="Pesquisar" style="center" styleClass="btn btn-success col-sm-1">
-                    <f:ajax listener="#{entregadorManbe.buscaPedidoEntregador()}" execute="id_entrega" render=":form:entrega"/>
+                    <f:ajax listener="#{entregadorManbe.buscaTodosEntregador()}" execute="id_entrega" render=":form:entrega"/>
                 </h:commandButton>
             </div>
-            <h:commandButton id="info" value="Salvar" rendered="#{entregadorManbe.info=='Clique no botão Salvar para que as alterações sejam feitas no sistema'}" >
-                <f:ajax listener="#{entregadorManbe.saveNewListSystem()}" render="form"/>
-            </h:commandButton>
-            #{entregadorManbe.info}
-            <h:dataTable id="entrega" value="#{entregadorManbe.listaEntregasEntregador}" var="entrega" styleClass="table">
+                <h:dataTable id="entrega" value="#{entregadorManbe.listaTodasEntregasEntregador}" var="entrega" styleClass="table">
                 <h:column>
-                    <f:facet name="header">ID Entrega </f:facet>
+                    <f:facet name="header">ID entrega </f:facet>
                         #{entrega.id}
                 </h:column>
                 <h:column>
@@ -58,24 +54,12 @@
                         #{entrega.destinatario}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Detalhes da entrega </f:facet>
+                    <f:facet name="header">Detalhes Entrega </f:facet>
                         #{entrega.destinatario}
                 </h:column>
                 <h:column>
-                    <h:selectOneRadio id="entrega_descricao" value="#{entrega.descricao}" >
-                        <f:selectItem itemLabel="Em Entrega" itemValue="Em Entrega"/>
-                        <f:selectItem itemLabel="Entregue" itemValue="Entregue"/>
-                        <f:ajax listener="#{entregadorManbe.infoToSave(entrega)}" execute=":form:entrega:entrega_descricao" render="form"/>
-                    </h:selectOneRadio>
-                    <h:outputText id="teste" value="#{pedido.situacao}" rendered="#{pedido.situacao=='Pago'}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Ação </f:facet>
-                    <h:commandButton value="Detalhes" action="#{entregadorManbe.details(entrega)}" styleClass="btn btn-success" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Ação </f:facet>
-                    <h:commandButton value="Falha na entrega" action="#{entregadorManbe.failShippment(entrega)}" styleClass="btn btn-success" />
+                    <f:facet name="header">Situação Entrega </f:facet>
+                        #{entrega.descricao}
                 </h:column>
             </h:dataTable>
         </h:form>

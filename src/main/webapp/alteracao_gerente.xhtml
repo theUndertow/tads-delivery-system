@@ -2,53 +2,103 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
-    </h:head>
+        <title>Cadastro</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    </h:head> 
     <h:body>
-        <h1>Cadastro</h1>
         <h:outputText value="#{alteracaoGerente.error}" style="color:red"/>
-        <h:outputLink value="index.xhtml">voltar</h:outputLink>
-        <h:form>
-            <p><h:outputLabel for="email">Email: </h:outputLabel>
-                <h:inputText id="email" value="#{alteracaoGerente.email}"/></p>
-            <p><h:outputLabel for="senha">Senha: </h:outputLabel>
-                <h:inputSecret id="senha" value="#{alteracaoGerente.usuario.senha}"/></p>
-            <p><h:outputLabel for="cpf">CPF: </h:outputLabel>
-                <h:inputText id="cpf" value="#{alteracaoGerente.cpf}"/></p>
-            <p><h:outputLabel for="nome">Nome: </h:outputLabel>
-                <h:inputText id="nome" value="#{alteracaoGerente.usuario.nome}"/></p>
-            <p><h:outputLabel for="telefone">telefone: </h:outputLabel>
-                <h:inputText id="telefone" value="#{alteracaoGerente.usuario.telefone}"/></p>
-            <p>Tipo:
-                <h:selectOneRadio id="usuario-tipo" onclick="return false;" value="#{alteracaoGerente.usuario.tipo}">
-                    <p><f:selectItem itemLabel="Gerente" itemValue="g" /></p>
-                    <p><f:selectItem itemLabel="Entregador" itemValue="e" /></p>
-                </h:selectOneRadio>
-            </p>
-            <hr></hr>
-            <h3>Endereço</h3>
-            <p><h:outputLabel for="rua">Rua: </h:outputLabel>
-                <h:inputText id="rua" value="#{alteracaoGerente.endereco.rua}"/></p>
-            <p><h:outputLabel for="numero">Número: </h:outputLabel>
-                <h:inputText id="numero" value="#{alteracaoGerente.endereco.numero}"/></p>
-            <p><h:outputLabel for="complemento">Complemento: </h:outputLabel>
-                <h:inputText id="complemento" value="#{alteracaoGerente.endereco.complemento}"/></p>
-            <p><h:outputLabel for="bairro">Bairro: </h:outputLabel>
-                <h:inputText id="bairro" value="#{alteracaoGerente.endereco.bairro}"/></p>
-            <p>Estado
-                <h:selectOneMenu id="comboEstado" value="#{alteracaoGerente.estadoSelecionado}" converter="estadoConverter">
-                    <f:selectItems value="#{alteracaoGerente.listaEstados}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado}"/>
-                    <f:ajax event="change" execute="comboEstado" render="comboCidade" listener="#{alteracaoGerente.buscarCidades}" />
-                </h:selectOneMenu>
-                Cidade
-                <h:selectOneMenu id="comboCidade" value="#{alteracaoGerente.cidadeSelecionada}" converter="cidadeConverter">
-                    <f:selectItems value="#{alteracaoGerente.listaCidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
-                </h:selectOneMenu>
-            </p>
-            <h:commandButton action="#{alteracaoGerente.updateUsuario()}" value="Submit"/>
-        </h:form>
+        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #017900">
+            <span class="navbar-brand mb-0 h1">TADS Delivery</span>
+            <div class="collapse navbar-collapse" id="navbarCliente">
+                <div class="navbar-nav">
+                    <h:outputLink value="cadastro.xhtml" styleClass="nav-item nav-link">Portal do Gerente</h:outputLink>
+                    <h:outputLink value="cadastro.xhtml" styleClass="nav-item nav-link">Cadastrar Usuários</h:outputLink>
+                    <h:outputLink value="lista_entregadores.xhtml" styleClass="nav-item nav-link">Lista de Entregadores</h:outputLink>
+                    <h:outputLink value="alteracao_gerente.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Alterar Gerente</h:outputLink>
+                </div>
+                <div class="navbar-nav ml-auto">
+                    <h:form>
+                        <h:commandButton value="Logout" action="#{gerenteManbe.logout()}" style="center" styleClass="btn btn-success m-3 nav-item"/>
+                    </h:form>
+                </div>
+            </div>
+        </nav>
+        <hr></hr>
+        <div class="container-fluid mt-5" style="width: 50%">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h1>Cadastro Usuário</h1>
+                </div>
+                <div class="card-body">
+                    <h:form class="form-horizontal">
+                        <div class="form-group row">
+                            <h:outputLabel value="E-mail: " for="email" styleClass="col-sm-2 col-label col"/>
+                            <h:inputText id="email" value="#{alteracaoGerente.usuario.email}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row">
+                            <h:outputLabel for="senha" value="Senha: "  styleClass="col-sm-2 col-label col" />
+                            <h:inputSecret id="senha" value="#{alteracaoGerente.usuario.senha}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="cpf" value="CPF: " styleClass="col-sm-2 col-label col" />
+                            <h:inputText id="cpf" value="#{alteracaoGerente.usuario.cpf}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="nome" value="Nome: " styleClass="col-sm-2 col-label col" />
+                            <h:inputText id="nome" value="#{alteracaoGerente.usuario.nome}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="telefone" value="Telefone" styleClass="col-sm-2 col-label col" />
+                            <h:inputText id="telefone" value="#{alteracaoGerente.usuario.telefone}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="usuario-tipo" value="Tipo: " styleClass="col-sm-2" />
+                            <h:selectOneRadio id="usuario-tipo" value="#{alteracaoGerente.usuario.tipo}" onclick="return false;" styleClass="col-sm-10">
+                                <f:selectItem itemLabel="Gerente" itemValue="g" />
+                                <f:selectItem itemLabel="Entregador" itemValue="e" />
+                            </h:selectOneRadio>
+                        </div>
+                        <div class="dropdown-divider" />
+                        <h3>Endereço</h3>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="rua" value="Rua: " styleClass="col-sm-2" />
+                            <h:inputText id="rua" value="#{alteracaoGerente.endereco.rua}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="numero" value="Número: " styleClass="col-sm-2" />
+                            <h:inputText id="numero" value="#{alteracaoGerente.endereco.numero}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row">  
+                            <h:outputLabel for="complemento" value="Complemento: " styleClass="col-sm-2" />
+                            <h:inputText id="complemento" value="#{alteracaoGerente.endereco.complemento}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="bairro" value="Bairro: " styleClass="col-sm-2" />
+                            <h:inputText id="bairro" value="#{alteracaoGerente.endereco.bairro}" styleClass="form-control col-sm-10"/>
+                        </div>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="comboEstado" value="Estado: " styleClass="col-sm-2" />
+                            <h:selectOneMenu id="comboEstado" value="#{alteracaoGerente.estadoSelecionado}" converter="estadoConverter" styleClass="custom-select col-sm-10">
+                                <f:selectItems value="#{alteracaoGerente.listaEstados}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado}"/>
+                                <f:ajax event="change" execute="comboEstado" render="comboCidade" listener="#{alteracaoGerente.buscarCidades}" />
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="form-group row"> 
+                            <h:outputLabel for="comboCidade" value="Cidade: " styleClass="col-sm-2" />
+                            <h:selectOneMenu id="comboCidade" value="#{alteracaoGerente.cidadeSelecionada}" converter="cidadeConverter" styleClass="custom-select col-sm-10">
+                                <f:selectItems value="#{alteracaoGerente.listaCidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="mx-auto">
+                            <h:commandButton action="#{alteracaoGerente.cadastroUsuario()}" value="Salvar" styleClass="btn btn-success m-3"/>
+                        <h:outputLink value="gerente.xhtml" styleClass="btn btn-success m-3">Voltar</h:outputLink>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
     </h:body>
 </html>
-

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -28,6 +29,7 @@ public class EntregadorManbe implements Serializable {
 
     private List<Entrega> listaEntregasAguardando;
     private List<Entrega> listaEntregasEntregador;
+    private List<Entrega> listaTodasEntregasEntregador;
     private List<Entrega> listaEntregasAlterados;
     private int idInput;
     private Entregador entregador;
@@ -48,6 +50,22 @@ public class EntregadorManbe implements Serializable {
 
     public void setListaEntregasEntregador(List<Entrega> listaEntregasEntregador) {
         this.listaEntregasEntregador = listaEntregasEntregador;
+    }
+
+    public List<Entrega> getListaTodasEntregasEntregador() {
+        return listaTodasEntregasEntregador;
+    }
+
+    public void setListaTodasEntregasEntregador(List<Entrega> listaTodasEntregasEntregador) {
+        this.listaTodasEntregasEntregador = listaTodasEntregasEntregador;
+    }
+
+    public List<Entrega> getListaEntregasAlterados() {
+        return listaEntregasAlterados;
+    }
+
+    public void setListaEntregasAlterados(List<Entrega> listaEntregasAlterados) {
+        this.listaEntregasAlterados = listaEntregasAlterados;
     }
 
     public Entregador getEntregador() {
@@ -95,9 +113,19 @@ public class EntregadorManbe implements Serializable {
 
     @PostConstruct
     public void init() {
+
+        if (loginManbe.getUsuario().getTipo() != 'e') {
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "gerente?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }
+
         if (loginManbe.getUsuario().getTipo() == 'e') {
             entregador = loginManbe.getUsuario().getEntregador();
             listaEntregasEntregador = EntregaFacade.listToDeliveryman(entregador);
+            listaTodasEntregasEntregador = EntregaFacade.listAllToDeliveryman(entregador);
         } else {
             entregador = new Entregador();
             listaEntregasEntregador = new ArrayList<>();
@@ -112,12 +140,11 @@ public class EntregadorManbe implements Serializable {
     }
 
     public String atribuirEntrega(Entrega entrega) {
-
-        if (EntregaFacade.assingDelivery(entrega, entregador)) {
+        this.error = EntregaFacade.assingDelivery(entrega, entregador);
+        if (this.error == null) {
             return "entregador_lista_entrega.xhtml";
         } else {
-            this.error = "Entregador atingiu o limite de entregas que possuir. Favor entregar ou cancelar alguma de suas entregas, por favor.";
-            return "entregador.xhtml";
+            return "";
         }
     }
 
@@ -151,6 +178,21 @@ public class EntregadorManbe implements Serializable {
         }
     }
 
+    public void buscaTodosEntregador() {
+        Entrega temp = EntregaFacade.selectDelivery(idInput);
+        if (temp != null) {
+            int i = 0;
+            for (Entrega e : listaTodasEntregasEntregador) {
+                if (e.getId() == temp.getId()) {
+                    listaTodasEntregasEntregador.remove(i);
+                    listaTodasEntregasEntregador.add(0, temp);
+                    break;
+                }
+                i++;
+            }
+        }
+    }
+
     public String details(Entrega entrega) {
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("entregaDetail", entrega);
@@ -177,9 +219,12 @@ public class EntregadorManbe implements Serializable {
     public void saveNewListSystem() {
 
         if (!listaEntregasAlterados.isEmpty()) {
-            EntregaFacade.updateDeliveries(listaEntregasAlterados);
+            this.error = EntregaFacade.updateDeliveries(listaEntregasAlterados);
+            if (this.error == null) {
+                this.info = "Salvo com sucesso meu filho";
+            }
         }
-        this.info = "Salvo com sucesso meu filho";
+        this.info = "Algo deu errado meu filho";
     }
 
     public String failShippment(Entrega entrega) {

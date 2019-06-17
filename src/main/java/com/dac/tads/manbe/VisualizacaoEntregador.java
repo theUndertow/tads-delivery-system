@@ -5,13 +5,13 @@
  */
 package com.dac.tads.manbe;
 
-import com.dac.tads.facade.EntregaFacade;
 import com.dac.tads.model.Entrega;
+import com.dac.tads.model.Entregador;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -19,17 +19,18 @@ import javax.inject.Named;
  *
  * @author marco
  */
-@Named(value = "cancelaEntrega")
-@ViewScoped
-public class CancelaEntrega implements Serializable{
-    private Entrega entrega;
 
-    public Entrega getEntrega() {
-        return entrega;
+@Named(value = "visualizacaoEntregador")
+@RequestScoped
+public class VisualizacaoEntregador implements Serializable{
+    private Entregador entregador;
+
+    public Entregador getEntregador() {
+        return entregador;
     }
 
-    public void setEntrega(Entrega entrega) {
-        this.entrega = entrega;
+    public void setEntregador(Entregador entregador) {
+        this.entregador = entregador;
     }
     
     @Inject
@@ -37,8 +38,9 @@ public class CancelaEntrega implements Serializable{
     
     @PostConstruct
     public void init(){
-        entrega = (Entrega) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregaCancel");
-        if(entrega == null && loginManbe.getUsuario().getTipo() == 'g'){
+        entregador = (Entregador) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregadorDetail");
+    
+        if(entregador == null && loginManbe.getUsuario().getTipo() == 'g'){
             NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
                     getNavigationHandler();
             handler.handleNavigation(FacesContext.getCurrentInstance(), null, "gerente?faces-redirect=true");
@@ -50,16 +52,6 @@ public class CancelaEntrega implements Serializable{
             handler.handleNavigation(FacesContext.getCurrentInstance(), null, "entregador?faces-redirect=true");
             // renderiza a tela
             FacesContext.getCurrentInstance().renderResponse();
-        }
-    }
-    
-    public String failShippmentReason(){
-        if(!entrega.getMotivo().equals("")){
-            entrega.setDescricao("Cancelado");
-            EntregaFacade.reasonFailShippment(entrega);
-            return "gerente";
-        }else{
-            return "";
         }
     }
 }

@@ -9,8 +9,10 @@ import com.dac.tads.facade.EntregaFacade;
 import com.dac.tads.model.Entrega;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -31,9 +33,18 @@ public class FalhaEntregaManbe implements Serializable{
         this.entrega = entrega;
     }
     
+    @Inject
+    LoginManbe loginManbe;
     
     @PostConstruct
     public void init(){
+        if(loginManbe.getUsuario().getTipo()!= 'e'){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "gerente?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }
         entrega = (Entrega) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("entregaFail");
     }
     

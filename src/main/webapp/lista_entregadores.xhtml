@@ -1,24 +1,20 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Portal do Gerente</title>
+        <title>Lista de Entregadores</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     </h:head>
-
     <h:body>
         <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #017900">
             <span class="navbar-brand mb-0 h1">TADS Delivery</span>
             <div class="collapse navbar-collapse" id="navbarCliente">
                 <div class="navbar-nav">
-                    <h:outputLink value="gerente.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Portal do Gerente</h:outputLink>
+                    <h:outputLink value="gerente.xhtml" styleClass="nav-item nav-link">Portal do Gerente</h:outputLink>
                     <h:outputLink value="cadastro.xhtml" styleClass="nav-item nav-link">Cadastrar Usuários</h:outputLink>
-                    <h:outputLink value="lista_entregadores.xhtml" styleClass="nav-item nav-link">Lista de Entregadores</h:outputLink>
+                    <h:outputLink value="lista_entregadores.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Lista de Entregadores</h:outputLink>
                     <h:outputLink value="alteracao_gerente.xhtml" styleClass="nav-item nav-link">Alterar Gerente</h:outputLink>
                 </div>
                 <div class="navbar-nav ml-auto">
@@ -28,43 +24,38 @@
                 </div>
             </div>
         </nav>
+        <hr></hr>
         <h:form id="form">
             <div class="form-group row">
-                <h:outputLabel value="Pesquisar: " for="id_entrega" styleClass="col-sm-2" />
-                <h:inputText id="id_entrega" value="#{gerenteManbe.idInput}" styleClass="form-control col-sm-7"/>
+                <h:outputLabel value="Pesquisar: " for="id_entregador" styleClass="col-sm-2" />
+                <h:inputText id="id_entregador" value="#{alteracaoEntregador.idInput}" styleClass="form-control col-sm-7"/>
                 <div class="col-sm-1" />
                 <h:commandButton value="Pesquisar" style="center" styleClass="btn btn-success col-sm-1">
-                    <f:ajax listener="#{gerenteManbe.buscaPedido()}" execute="id_entrega" render=":form:entrega"/>
+                    <f:ajax listener="#{alteracaoEntregador.buscaEntregador()}" execute="id_entregador" render=":form:entregadores"/>
                 </h:commandButton>
             </div>
-                <h:dataTable id="entrega" value="#{gerenteManbe.listaGerenteEntregas}" var="entrega" styleClass="table">
+
+
+            <h:dataTable id="entregadores" value="#{alteracaoEntregador.listaEntregadores}" var="entregador" styleClass="table">
                 <h:column>
-                    <f:facet name="header">ID Entrega </f:facet>
-                        #{entrega.id}
+                    <f:facet name="header">ID </f:facet>
+                        #{entregador.id}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Situação </f:facet>
-                        #{entrega.descricao}
+                    <f:facet name="header">Nome</f:facet>
+                        #{entregador.usuario.nome}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">ID Pedido </f:facet>
-                        #{entrega.num_pedido}
+                    <f:facet name="header">E-mail </f:facet>
+                        #{entregador.usuario.email}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Cliente </f:facet>
-                        #{entrega.destinatario}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Entregador </f:facet>
-                        #{(entrega.entregador != null) ? entrega.entregador.usuario.nome : 'Indefinido'}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Ação </f:facet>
-                    <h:commandButton value="Detalhes" action="#{gerenteManbe.details(entrega)}" styleClass="btn btn-success" />
+                    <f:facet name="header">Telefone </f:facet>
+                        #{entregador.usuario.telefone}
                 </h:column>
                 <h:column>
                     <f:facet name="header">Ação </f:facet>
-                    <h:commandButton value="Cancelar" action="#{gerenteManbe.cancelDelivery(entrega)}" styleClass="btn btn-success" />
+                    <h:commandButton value="Detalhes" action="#{alteracaoEntregador.details(entregador)}" styleClass="btn btn-success"/>
                 </h:column>
             </h:dataTable>
         </h:form>

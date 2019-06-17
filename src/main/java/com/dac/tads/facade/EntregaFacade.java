@@ -75,7 +75,7 @@ public class EntregaFacade {
         return EntregadorDAO.listToDeliveryman(deliveryman);
     }
 
-    public static boolean assingDelivery(Entrega delivery, Entregador deliveryman) {
+    public static String assingDelivery(Entrega delivery, Entregador deliveryman) {
 
         List<Entrega> deliveries = EntregadorDAO.listToDeliveryman(deliveryman);
 
@@ -86,15 +86,20 @@ public class EntregaFacade {
             Coisa coisa = new Coisa();
             coisa.setEstado(delivery.getDescricao());
             coisa.setId_pedido(delivery.getNum_pedido());
-            Delivery.updateDelivery(coisa);
+            int erroOuAcertoKKJJ = Delivery.updateDelivery(coisa);
+            if (erroOuAcertoKKJJ == 200) {
+                entregaDAO.updateEntrega(delivery);
+            } else {
+                return "Erro : " + erroOuAcertoKKJJ + " Pule pela janela meu filho";
+            }
             entregaDAO.updateEntrega(delivery);
         } else {
-            return false;
+            return "Erro : Ja antingiu o limite de entregas";
         }
-        return true;
+        return null;
     }
 
-    public static void updateDeliveries(List<Entrega> listaEntregasAlterados) {
+    public static String updateDeliveries(List<Entrega> listaEntregasAlterados) {
         EntregaDAO entregaDAO = new EntregaDAO();
 
         for (Entrega e : listaEntregasAlterados) {
@@ -102,10 +107,16 @@ public class EntregaFacade {
                 Coisa coisa = new Coisa();
                 coisa.setEstado(e.getDescricao());
                 coisa.setId_pedido(e.getNum_pedido());
-                Delivery.updateDelivery(coisa);
+                int erroOuAcertoKKJJ = Delivery.updateDelivery(coisa);
+                if (erroOuAcertoKKJJ == 200) {
+                    entregaDAO.updateEntrega(e);
+                } else {
+                    return "Pedido "+ e.getId()+" Não pode ser entregue. Erro:" + erroOuAcertoKKJJ + " Pule pela janela meu filho";
+                }
                 entregaDAO.updateEntrega(e);
             }
         }
+        return null;
     }
 
     public static void reasonFailShippment(Entrega entrega) {
@@ -121,5 +132,9 @@ public class EntregaFacade {
 
     public static List<Entrega> listaAllDeliveriesToManager() {
         return EntregaDAO.selectListEntrega();
+    }
+
+    public static List<Entrega> listAllToDeliveryman(Entregador entregador) {
+        return EntregadorDAO.listAllToDeliveryman(entregador);
     }
 }

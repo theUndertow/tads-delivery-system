@@ -11,7 +11,9 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -41,12 +43,23 @@ public class GerenteManbe implements Serializable{
         this.idInput = idInput;
     }
     
+    @Inject
+    LoginManbe loginManbe;
+    
     @PostConstruct
     public void init(){
+        if(loginManbe.getUsuario().getTipo() != 'g'){
+            NavigationHandler handler = FacesContext.getCurrentInstance().getApplication().
+                    getNavigationHandler();
+            handler.handleNavigation(FacesContext.getCurrentInstance(), null, "entregador?faces-redirect=true");
+            // renderiza a tela
+            FacesContext.getCurrentInstance().renderResponse();
+        }
         listaGerenteEntregas = EntregaFacade.listaAllDeliveriesToManager();
     }
     
     public String logout() {
+        
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "index?faces-redirect=true";
     }
