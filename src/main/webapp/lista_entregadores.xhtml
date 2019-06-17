@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Lista de Entregadores</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
     </h:head>
     <h:body>
@@ -12,9 +12,9 @@
             <span class="navbar-brand mb-0 h1">TADS Delivery</span>
             <div class="collapse navbar-collapse" id="navbarCliente">
                 <div class="navbar-nav">
-                    <h:outputLink value="cadastro.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Portal do Gerente</h:outputLink>
+                    <h:outputLink value="gerente.xhtml" styleClass="nav-item nav-link">Portal do Gerente</h:outputLink>
                     <h:outputLink value="cadastro.xhtml" styleClass="nav-item nav-link">Cadastrar Usuários</h:outputLink>
-                    <h:outputLink value="lista_entregadores.xhtml" styleClass="nav-item nav-link">Lista de entregadores</h:outputLink>
+                    <h:outputLink value="lista_entregadores.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Lista de Entregadores</h:outputLink>
                     <h:outputLink value="alteracao_gerente.xhtml" styleClass="nav-item nav-link">Alterar Gerente</h:outputLink>
                 </div>
                 <div class="navbar-nav ml-auto">
@@ -25,34 +25,37 @@
             </div>
         </nav>
         <hr></hr>
-        Listagem de entregadores
         <h:form id="form">
-            <h:outputLabel value="Pesquisar: " for="id_entregador" styleClass="col-sm-2" />
-            <h:inputText id="id_entregador" value="#{alteracaoEntregador.idInput}" styleClass="form-control col-sm-7"/>
-            <div class="col-sm-1" />
-            <h:commandButton value="Pesquisar" style="center" styleClass="btn btn-success col-sm-1">
-                <f:ajax listener="#{alteracaoEntregador.buscaEntregador()}" execute="id_entregador" render=":form:entregadores"/>
-            </h:commandButton>
-            <h:dataTable id="entregadores" value="#{alteracaoEntregador.listaEntregadores}" var="entregador">
+            <div class="form-group row">
+                <h:outputLabel value="Pesquisar: " for="id_entregador" styleClass="col-sm-2" />
+                <h:inputText id="id_entregador" value="#{alteracaoEntregador.idInput}" styleClass="form-control col-sm-7"/>
+                <div class="col-sm-1" />
+                <h:commandButton value="Pesquisar" style="center" styleClass="btn btn-success col-sm-1">
+                    <f:ajax listener="#{alteracaoEntregador.buscaEntregador()}" execute="id_entregador" render=":form:entregadores"/>
+                </h:commandButton>
+            </div>
+
+
+            <h:dataTable id="entregadores" value="#{alteracaoEntregador.listaEntregadores}" var="entregador" styleClass="table">
                 <h:column>
-                    <f:facet name="header">Id  </f:facet>
+                    <f:facet name="header">ID </f:facet>
                         #{entregador.id}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Nome : </f:facet>
+                    <f:facet name="header">Nome</f:facet>
                         #{entregador.usuario.nome}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Email : </f:facet>
+                    <f:facet name="header">E-mail </f:facet>
                         #{entregador.usuario.email}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Telefone : </f:facet>
+                    <f:facet name="header">Telefone </f:facet>
                         #{entregador.usuario.telefone}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Action : </f:facet>
-                    <h:commandButton value="Detalhes" action="#{alteracaoEntregador.details(entregador)}" />
+                    <f:facet name="header">Ação </f:facet>
+                    <h:commandButton value="Detalhes" action="#{alteracaoEntregador.details(entregador)}" styleClass="btn btn-success"/>
                 </h:column>
             </h:dataTable>
         </h:form>

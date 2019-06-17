@@ -18,7 +18,7 @@
                 <div class="navbar-nav">
                     <h:outputLink value="gerente.xhtml" styleClass="nav-item nav-link active" style="font-weight: bold">Portal do Gerente</h:outputLink>
                     <h:outputLink value="cadastro.xhtml" styleClass="nav-item nav-link">Cadastrar Usuários</h:outputLink>
-                    <h:outputLink value="lista_entregadores.xhtml" styleClass="nav-item nav-link">Lista de entregadores</h:outputLink>
+                    <h:outputLink value="lista_entregadores.xhtml" styleClass="nav-item nav-link">Lista de Entregadores</h:outputLink>
                     <h:outputLink value="alteracao_gerente.xhtml" styleClass="nav-item nav-link">Alterar Gerente</h:outputLink>
                 </div>
                 <div class="navbar-nav ml-auto">
@@ -28,7 +28,6 @@
                 </div>
             </div>
         </nav>
-        <hr></hr>
         <h:form id="form">
             <div class="form-group row">
                 <h:outputLabel value="Pesquisar: " for="id_entrega" styleClass="col-sm-2" />
@@ -44,7 +43,7 @@
                         #{entrega.id}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Situação: </f:facet>
+                    <f:facet name="header">Situação </f:facet>
                         #{entrega.descricao}
                 </h:column>
                 <h:column>
@@ -56,16 +55,16 @@
                         #{entrega.destinatario}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">Entregador  </f:facet>
+                    <f:facet name="header">Entregador </f:facet>
                         #{(entrega.entregador != null) ? entrega.entregador.usuario.nome : 'Indefinido'}
                 </h:column>
                 <h:column>
                     <f:facet name="header">Ação </f:facet>
-                    <h:commandButton value="Detalhes" action="#{gerenteManbe.details(entrega)}" />
+                    <h:commandButton value="Detalhes" action="#{gerenteManbe.details(entrega)}" styleClass="btn btn-success" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">Ação </f:facet>
-                    <h:commandButton value="Cancelar" action="#{gerenteManbe.cancelDelivery(entrega)}" />
+                    <h:commandButton value="Cancelar" action="#{gerenteManbe.cancelDelivery(entrega)}" styleClass="btn btn-success" />
                 </h:column>
             </h:dataTable>
         </h:form>
