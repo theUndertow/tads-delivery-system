@@ -57,7 +57,7 @@ public class EntregaDAO {
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("from Entrega");
+            Query query = session.createQuery("from Entrega order by entrega_data asc");
             entregas = query.list();
             session.getTransaction().commit();
             session.close();
