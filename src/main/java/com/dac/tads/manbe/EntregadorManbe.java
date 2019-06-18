@@ -222,6 +222,7 @@ public class EntregadorManbe implements Serializable {
             this.error = EntregaFacade.updateDeliveries(listaEntregasAlterados);
             if (this.error == null) {
                 this.info = "Salvo com sucesso meu filho";
+                return;
             }
         }
         this.info = "Algo deu errado meu filho";
